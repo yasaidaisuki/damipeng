@@ -91,7 +91,7 @@ export interface Project {
 export const home = {
   pitch: 'Software engineer building backend systems and infrastructure.',
   pitchDetail:
-    'I like designing systems that work reliably in production, understanding the engineering decisions behind them, and occasionally going all the way down to the underlying implementation.',
+    'I like designing systems that work reliably in production and understanding the engineering decisions behind them.',
   ctas: {
     work: 'See my work',
     resume: 'Résumé (PDF)',
@@ -103,8 +103,7 @@ export const home = {
       org: 'IBM Skills Network',
       orgHref: 'https://skills.network/',
       orgBrand: 'ibm',
-      after:
-        ', third term — working on backend infrastructure, distributed workers, Kubernetes, Redis and Terraform for a platform serving 80K monthly users.',
+      after: ', third term — backend infrastructure for a platform serving 80K monthly users.',
     },
     {
       label: 'Next',
