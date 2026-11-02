@@ -3,6 +3,7 @@ import MetricCard from '@/components/MetricCard.astro';
 import '@fontsource/ibm-plex-sans/latin-600.css';
 import '@fontsource/inter/latin-600.css';
 import ProjectCard from '@/components/ProjectCard.astro';
+import RoomHero from '@/components/RoomHero.astro';
 import SectionLabel from '@/components/SectionLabel.astro';
 import StatusLine from '@/components/StatusLine.astro';
 import { home, links, projects, site } from '@/data/site';
@@ -15,29 +16,36 @@ const secondaryCtas = [links.github, links.linkedin, { ...links.resume, label: h
 ---
 
 <Base>
-  <section class="pt-30 pb-18" aria-labelledby="hero-heading">
-    <div class="mb-5">
-      <StatusLine />
-    </div>
-    <h1 id="hero-heading" class="text-display">
-      {site.name}
-    </h1>
-    <p class="text-pitch text-fg mt-5 max-w-[600px]">{home.pitch}</p>
-    <p class="text-lead text-secondary mt-3 max-w-[600px]">{home.pitchDetail}</p>
-    <div class="mt-9 flex flex-wrap gap-3">
-      <a href="/work" class="btn btn-primary">
-        {home.ctas.work}
-      </a>
-      {secondaryCtas.map((link) => (
-        <a
-          href={link.href}
-          class="btn btn-secondary"
-          {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-        >
-          {link.label}
+  <section
+    slot="wide"
+    class="flex flex-wrap items-center gap-7 pt-8 pb-12 sm:gap-12 sm:pt-14 sm:pb-16"
+    aria-labelledby="hero-heading"
+  >
+    <div class="min-w-0 flex-[1_1_400px]">
+      <div class="mb-5">
+        <StatusLine />
+      </div>
+      <h1 id="hero-heading" class="text-display">
+        {site.name}
+      </h1>
+      <p class="text-pitch text-fg mt-5 max-w-[600px]">{home.pitch}</p>
+      <p class="text-lead text-secondary mt-3 max-w-[600px]">{home.pitchDetail}</p>
+      <div class="mt-9 flex flex-wrap gap-3">
+        <a href="/work" class="btn btn-primary">
+          {home.ctas.work}
         </a>
-      ))}
+        {secondaryCtas.map((link) => (
+          <a
+            href={link.href}
+            class="btn btn-secondary"
+            {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
     </div>
+    <RoomHero />
   </section>
 
   <section class="section grid gap-8 sm:grid-cols-2" aria-label="Now and next">

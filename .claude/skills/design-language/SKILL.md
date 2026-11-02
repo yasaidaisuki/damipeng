@@ -5,8 +5,8 @@ description: Design language for the dami.peng portfolio site (Astro + Tailwind 
 
 # dami.peng design language
 
-Minimal and engineering-flavoured. A single 760px column of text, hairline dividers, Geist with
-Geist Mono labels, one blue accent, and almost no decoration. The approved mockups are the visual
+Minimal and engineering-flavoured. A 760px column of text, hairline dividers, Geist with Geist Mono
+labels, one blue accent, and almost no decoration. The one picture is the 3D room in the home hero. The approved mockups are the visual
 source of truth. The tokens in `src/styles/global.css` encode them. **If this file and
 `global.css` disagree, `global.css` wins. Update this file to match it.**
 
@@ -18,7 +18,7 @@ source of truth. The tokens in `src/styles/global.css` encode them. **If this fi
    vertical rhythm. Bordered boxes (`rounded-card border-hairline`) are reserved for metric and
    project cards. Never use a shadow.
 3. **Quiet chrome.** The nav is a mono wordmark and three text links. The footer is one mono line.
-   There are no hero images, gradients or icons beyond `→ ↗ ↓` glyphs.
+   Apart from the home room, there are no hero images, gradients or icons beyond `→ ↗ ↓` glyphs.
 4. **Data-driven copy.** Every string lives in `src/data/site.ts`, `src/data/work.ts` or post
    frontmatter. Components only render props.
 
@@ -43,6 +43,8 @@ source of truth. The tokens in `src/styles/global.css` encode them. **If this fi
 | `inverse` / `on-inverse` | `#111113` / `#ffffff` | Primary button, active filter pill        |
 | `brand-ibm`              | `#0f62fe`             | Hover on IBM's name (IBM Blue 60)         |
 | `brand-shopify`          | `#008060`             | Hover on Shopify's name (Shopify green)   |
+| `room`                   | `#7e8cd6`             | Room frame backdrop (the rendered floor)  |
+| `scrim`                  | `#111113` at 55%      | Hint pill over the room                   |
 
 **Light mode only.** The site deliberately has no dark mode: never add `prefers-color-scheme`
 rules, `dark:` variants or dark logo variants. Every color change must pass
@@ -75,11 +77,14 @@ medium, `tracking-[0.06em]`, uppercase, `muted`.
 
 ### Shape and layout
 
-- Radii: `rounded-chip` 6px (tags), `rounded-btn` 8px (buttons), `rounded-card` 10px (cards, code).
+- Radii: `rounded-chip` 6px (tags), `rounded-btn` 8px (buttons), `rounded-card` 10px (cards, code),
+  `rounded-frame` 16px (the room frame).
   Filter pills are `rounded-full`.
-- Column: `max-w-content` (760px) with `px-6`; posts use `max-w-post` (680px). The nav and footer
-  sit inside the column.
-- Rhythm: home hero `pt-30 pb-18`; `.section` is `border-t py-12`; `.page-header` is `pt-24 pb-12`.
+- Containers: the header and home hero use `max-w-wide` (1200px) with `px-6` on every page, so the
+  nav never moves. Content and the footer sit in a left-aligned `max-w-content` (760px) column inside
+  it; posts use `max-w-post` (680px). Pages put full-width hero content in Base's `wide` slot.
+- Rhythm: home hero `pt-8 pb-12 sm:pt-14 sm:pb-16`, text and room side by side
+  (`flex-[1_1_400px]` / `flex-[1_1_380px] max-w-135`), stacking on narrow screens; `.section` is `border-t py-12`; `.page-header` is `pt-24 pb-12`.
   Use Tailwind's 4px scale and avoid one-off pixel values.
 - Work timeline: flex-wrap row with a `flex-[0_0_var(--spacing-date-col)]` (168px) mono date column
   and a `flex-[999_1_420px]` content column, so it stacks on mobile without breakpoints.
@@ -104,6 +109,10 @@ padding? }`. Logos are scaled so their capital letters are 24px tall, not by box
   so logos shrink on narrow phones instead of overflowing the page.
   The home page names companies in text with their brand font, without logos. Those names link to
   the company site and fade (`duration-300`) to their `brand-*` color on hover.
+- **Room** (home hero only, `RoomHero.astro`): a square `rounded-frame border-hairline bg-room`
+  frame holding a poster `<img>` with the three.js canvas faded in over it, a `bg-scrim
+text-on-inverse text-meta` mono hint pill bottom-left that fades after the first drag, and a mono
+  `text-meta text-muted` caption. The frame is `touch-pan-y`, so vertical swipes still scroll.
 
 ## Interaction and accessibility
 

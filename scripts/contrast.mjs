@@ -12,6 +12,18 @@ const ratio = (a, b) => {
   return (x + 0.05) / (y + 0.05);
 };
 
+/** `over` at `alpha` composited onto `under`, as hex. */
+const blend = (over, alpha, under) =>
+  '#' +
+  [0, 2, 4]
+    .map((i) => {
+      const [a, b] = [over, under].map((h) => parseInt(h.replace('#', '').slice(i, i + 2), 16));
+      return Math.round(a * alpha + b * (1 - alpha))
+        .toString(16)
+        .padStart(2, '0');
+    })
+    .join('');
+
 const themes = {
   light: {
     bg: '#FFFFFF',
@@ -27,6 +39,8 @@ const themes = {
     onInverse: '#FFFFFF',
     brandIbm: '#0F62FE',
     brandShopify: '#008060',
+    // The room hint pill: --color-scrim (#111113 at 55%) over --color-room.
+    scrimOnRoom: blend('#111113', 0.55, '#7E8CD6'),
   },
 };
 
@@ -45,6 +59,7 @@ for (const [name, t] of Object.entries(themes)) {
     ['onInverse/inverse', t.onInverse, t.inverse, 4.5],
     ['brandIbm/bg', t.brandIbm, t.bg, 4.5],
     ['brandShopify/bg', t.brandShopify, t.bg, 4.5],
+    ['onInverse/scrim', t.onInverse, t.scrimOnRoom, 4.5],
   ];
   for (const [label, a, b, min] of checks) {
     const r = ratio(a, b);

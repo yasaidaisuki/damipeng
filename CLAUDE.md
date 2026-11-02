@@ -19,12 +19,14 @@ src/
   content.config.ts    `posts` collection (glob loader) + zod schema
   content/posts/       *.mdx posts
   lib/                 posts.ts (getPosts/getTags/postUrl), format.ts (dates), logos.ts (build-time logo check)
-  layouts/             Base.astro (head, nav, main, footer), Post.astro (article + comments)
+  lib/room/scene.ts    three.js room for the home hero, loaded lazily by components/RoomHero.astro
+  assets/room/         room.glb, screen.mp4 (monitor video), screen-still.webp (its frame at 5s)
+  layouts/             Base.astro (head, nav, main with a `wide` slot, footer), Post.astro (article + comments)
   components/          Static .astro components, zero client JS
   components/islands/  React .tsx components that hydrate (PostFilter, Comments)
   pages/               Routes; og/[...slug].png.ts renders OG images at build time with satori
   styles/global.css    Tailwind entry: @theme tokens, base + component classes
-public/                favicon, robots.txt, _headers (Cloudflare), logos/, resume.pdf
+public/                favicon, robots.txt, _headers (Cloudflare), logos/, resume.pdf, room/ (hero poster)
 scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens change
 ```
 
@@ -38,9 +40,9 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
   truth.** Their shared values live as tokens in `src/styles/global.css`; match new UI to them.
 - **Design tokens only.** Use the semantic utilities from `@theme`. Colors: `bg`, `fg`, `body`,
   `secondary`, `muted`, `hairline`, `hairline-soft`, `border-strong`, `surface`, `chip`, `accent`,
-  `inverse`/`on-inverse`. Type: `text-display`, `text-h1`, `text-h1-post`, `text-h2`, `text-pitch`,
+  `inverse`/`on-inverse`, `room`, `scrim`. Type: `text-display`, `text-h1`, `text-h1-post`, `text-h2`, `text-pitch`,
   `text-lead`, `text-prose`, `text-body-lg`, `text-ui` (15px), `text-meta` (13px),
-  `text-metric`. Also `rounded-chip|btn|card`, `max-w-content|post`, `min-h-touch`, `font-mono`,
+  `text-metric`. Also `rounded-chip|btn|card|frame`, `max-w-wide|content|post`, `min-h-touch`, `font-mono`,
   `font-plex-mono`. No raw hex or arbitrary color values in markup. The exception is the OG
   renderer, which can't read CSS variables.
 - **Light mode only.** There is deliberately no dark mode: don't add `prefers-color-scheme` rules,
@@ -51,6 +53,11 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
 - **`.astro` by default, `.tsx` only when interactive.** Islands must render meaningful HTML on
   the server (no-JS users see the full list). Prefer `client:visible` unless the island is
   above the fold. Pass pre-formatted strings (dates) as props so SSR and hydration match.
+  The one exception is the home room (`RoomHero.astro`): a plain `<script>` that `import()`s three.js,
+  so the home page doesn't ship React just to host a canvas.
+- **Layout:** the header and the home hero (an element with `slot="wide"`) use the 1200px
+  `max-w-wide` container on every page; page content and the footer sit in a left-aligned
+  `max-w-content`/`max-w-post` column inside it.
 - Accessibility: one `h1` per page, labelled sections, 44px touch targets (`min-h-touch`),
   `:focus-visible` rings, `<time datetime>`. ESLint runs jsx-a11y in strict mode.
 - Drafts: `draft: true` posts render in dev only; `getPosts()` handles the filtering. A post's first
@@ -61,6 +68,20 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
   `padding` hides built-in clear space by clipping it inside a wrapper (percentage margins, so the
   logo also shrinks to fit narrow phones) instead of editing the file.
   Missing files fall back to a text name.
+
+## Home room
+
+- Ported from the separate `portfolio_website` repo: its model and dark-theme lighting, posed where
+  its intro animation ends. Drag (mouse or touch) turns it up to ±5° and it eases back on release.
+- The poster `<img>` is the LCP element; the scene loads after `load` + idle and fades in over it.
+  It stays on the poster for reduced motion, no WebGL, `deviceMemory < 4` or
+  `hardwareConcurrency <= 4`. Renders are on demand only, and pause off screen.
+- The monitor plays `screen.mp4` (starting at 5s) only on `(hover: hover) and (pointer: fine)`;
+  touch devices show `screen-still.webp` and never fetch the video.
+- **`public/room/poster*.webp` is a render of this scene** (still screen, no hint, 1080px and 540px).
+  Re-render it whenever the framing (`FRUSTUM`, camera), lighting or model changes, or the fade-in
+  will visibly jump: screenshot the live canvas at 1280px wide, DPR 2, with the mp4 request blocked.
+  `--color-room` is the rendered floor colour; re-sample it too.
 
 ## Phase 2 hooks
 

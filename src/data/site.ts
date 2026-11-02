@@ -96,6 +96,11 @@ export const home = {
     work: 'See my work',
     resume: 'Résumé (PDF)',
   },
+  room: {
+    alt: 'Isometric 3D model of my room: desk with a curved monitor, shelves, posters, a bed and a floor lamp',
+    hint: '↔ Drag to look around',
+    caption: 'My room, modelled in Blender',
+  },
   nowNext: [
     {
       label: 'Now',

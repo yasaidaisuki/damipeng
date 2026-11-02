@@ -9,11 +9,12 @@ import SEO, { type Props as SEOProps } from '@/components/SEO.astro';
 import { pages, site } from '@/data/site';
 
 type Props = SEOProps & {
-  /** Max width of <main>: "content" (760px) or "post" (680px). */
+  /** Width of the page column: "content" (760px) or "post" (680px). */
   width?: 'content' | 'post';
 };
 
 const { width = 'content', ...seo } = Astro.props;
+const column = width === 'post' ? 'max-w-post' : 'max-w-content';
 ---
 
 <!doctype html>
@@ -44,17 +45,19 @@ const { width = 'content', ...seo } = Astro.props;
     >
       {pages.skipLink}
     </a>
-    <div
-      class:list={[
-        'mx-auto flex w-full flex-1 flex-col px-6',
-        width === 'post' ? 'max-w-post' : 'max-w-content',
-      ]}
-    >
+    <!-- The header (and the home hero, via the "wide" slot) use the full 1200px container on every
+    page, so the nav doesn't move; everything else sits in a left-aligned column inside it. -->
+    <div class="max-w-wide mx-auto flex w-full flex-1 flex-col px-6">
       <Nav />
       <main id="main" class="flex-1">
-        <slot />
+        <slot name="wide" />
+        <div class={column}>
+          <slot />
+        </div>
       </main>
-      <Footer />
+      <div class={column}>
+        <Footer />
+      </div>
     </div>
   </body>
 </html>

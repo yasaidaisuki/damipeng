@@ -21,5 +21,7 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
+    // The lazily loaded three.js room chunk is ~620 KB (155 KB gzipped); nothing else comes close.
+    build: { chunkSizeWarningLimit: 700 },
   },
 });

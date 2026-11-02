@@ -32,11 +32,17 @@
   /* Company brand colors, used only for hover on company names (IBM Blue 60, Shopify green). */
   --color-brand-ibm: #0f62fe;
   --color-brand-shopify: #008060;
+  /* Home hero room: the backdrop behind the 3D scene (its lit floor), and the hint pill's scrim. */
+  --color-room: #7e8cd6;
+  --color-scrim: rgb(17 17 19 / 0.55);
 
   --radius-chip: 6px;
   --radius-btn: 8px;
   --radius-card: 10px;
+  --radius-frame: 16px;
 
+  /* Header and home hero; page content sits in the content/post column, left-aligned inside it. */
+  --container-wide: 1200px;
   --container-content: 760px;
   --container-post: 680px;
 

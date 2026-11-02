@@ -1,0 +1,88 @@
+---
+// The home hero's room: a poster <img> (the LCP element) with the three.js scene faded in over it
+// once the page is idle. Devices that can't or shouldn't run it keep the poster.
+import { home } from '@/data/site';
+
+const { room } = home;
+---
+
+<figure class="max-w-135 min-w-0 flex-[1_1_380px]">
+  <div
+    data-room
+    class="bg-room border-hairline rounded-frame data-live:cursor-grab data-live:active:cursor-grabbing relative aspect-square touch-pan-y overflow-hidden border select-none"
+  >
+    <img
+      src="/room/poster.webp"
+      srcset="/room/poster.webp 540w, /room/poster@2x.webp 1080w"
+      sizes="(min-width: 1248px) 540px, calc(100vw - 48px)"
+      width="1080"
+      height="1080"
+      alt={room.alt}
+      fetchpriority="high"
+      draggable="false"
+      class="absolute inset-0 size-full"
+    />
+    <canvas
+      aria-hidden="true"
+      class="absolute inset-0 size-full opacity-0 transition-opacity duration-300"
+    ></canvas>
+    <span
+      aria-hidden="true"
+      data-room-hint
+      class="bg-scrim text-on-inverse text-meta pointer-events-none absolute bottom-3.5 left-3.5 rounded-full px-2.5 py-1.5 font-mono opacity-0 transition-opacity duration-300"
+    >
+      {room.hint}
+    </span>
+  </div>
+  <figcaption class="text-meta text-muted mt-2.5 font-mono">{room.caption}</figcaption>
+</figure>
+
+<script>
+  const frame = document.querySelector<HTMLElement>('[data-room]');
+  const canvas = frame?.querySelector('canvas');
+  const hint = frame?.querySelector('[data-room-hint]');
+
+  const hasWebGL = () => {
+    try {
+      return !!document.createElement('canvas').getContext('webgl2');
+    } catch {
+      return false;
+    }
+  };
+  // Stay on the poster for reduced motion and low-end devices.
+  const capable = () => {
+    const nav = navigator as Navigator & { deviceMemory?: number };
+    return (
+      !matchMedia('(prefers-reduced-motion: reduce)').matches &&
+      (nav.deviceMemory ?? 8) >= 4 &&
+      nav.hardwareConcurrency > 4 &&
+      hasWebGL()
+    );
+  };
+
+  const start = async () => {
+    if (!frame || !canvas) return;
+    try {
+      const { mountRoom } = await import('@/lib/room/scene');
+      // Only computers with a mouse play the monitor video; touch devices get a still frame.
+      await mountRoom(frame, canvas, {
+        video: matchMedia('(hover: hover) and (pointer: fine)').matches,
+      });
+    } catch {
+      return; // the poster stays
+    }
+    canvas.classList.remove('opacity-0');
+    frame.dataset.live = '';
+    hint?.classList.remove('opacity-0');
+    frame.addEventListener('pointerdown', () => hint?.classList.add('opacity-0'), { once: true });
+  };
+
+  if (frame && canvas && capable()) {
+    const idle = () =>
+      'requestIdleCallback' in window
+        ? requestIdleCallback(() => void start(), { timeout: 2000 })
+        : setTimeout(() => void start(), 200);
+    if (document.readyState === 'complete') idle();
+    else addEventListener('load', idle, { once: true });
+  }
+</script>
