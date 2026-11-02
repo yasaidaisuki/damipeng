@@ -11,6 +11,9 @@
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-plex-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  /* Brand faces for company names: IBM Plex Sans (IBM) and Inter (Shopify Polaris). */
+  --font-brand-ibm: 'IBM Plex Sans', var(--font-sans);
+  --font-brand-shopify: 'Inter', var(--font-sans);
 
   --color-bg: #ffffff;
   --color-fg: #111113;
@@ -67,22 +70,23 @@
 }
 
 @layer base {
+  /* Dark: slate navy rather than near-black. */
   @media (prefers-color-scheme: dark) {
     :root {
-      --color-bg: #0d0d10;
-      --color-fg: #ededf0;
-      --color-body: #c8c8d0;
-      --color-secondary: #b4b4be;
-      --color-muted: #9c9ca8;
-      --color-hairline: #2a2a31;
-      --color-hairline-soft: #1f1f25;
-      --color-border-strong: #3a3a42;
-      --color-surface: #151519;
-      --color-chip: #1c1c22;
-      --color-accent: #7d97f2;
-      --color-on-accent: #0d0d10;
-      --color-inverse: #ededf0;
-      --color-on-inverse: #0d0d10;
+      --color-bg: #131a2a;
+      --color-fg: #eef1f7;
+      --color-body: #cdd3e0;
+      --color-secondary: #b6bdcc;
+      --color-muted: #9aa3b5;
+      --color-hairline: #2a3447;
+      --color-hairline-soft: #212a3b;
+      --color-border-strong: #36415a;
+      --color-surface: #1a2234;
+      --color-chip: #1f2839;
+      --color-accent: #8ca4f5;
+      --color-on-accent: #131a2a;
+      --color-inverse: #eef1f7;
+      --color-on-inverse: #131a2a;
     }
   }
 

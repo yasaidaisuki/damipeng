@@ -1,5 +1,7 @@
 ---
 import MetricCard from '@/components/MetricCard.astro';
+import '@fontsource/ibm-plex-sans/latin-600.css';
+import '@fontsource/inter/latin-600.css';
 import ProjectCard from '@/components/ProjectCard.astro';
 import SectionLabel from '@/components/SectionLabel.astro';
 import StatusLine from '@/components/StatusLine.astro';
@@ -43,7 +45,15 @@ const secondaryCtas = [links.github, links.linkedin, { ...links.resume, label: h
         <h2 class="section-label mb-2 text-xs">{item.label}</h2>
         <p class="text-body-lg leading-normal">
           {item.before}
-          <strong class="font-semibold">{item.org}</strong>
+          <strong
+            class:list={[
+              'font-semibold',
+              item.orgFont === 'ibm' && 'font-brand-ibm',
+              item.orgFont === 'shopify' && 'font-brand-shopify',
+            ]}
+          >
+            {item.org}
+          </strong>
           {item.after}
         </p>
       </div>
@@ -75,9 +85,11 @@ const secondaryCtas = [links.github, links.linkedin, { ...links.resume, label: h
 
   <section class="section" aria-labelledby="projects">
     <SectionLabel id="projects">{home.sections.projects}</SectionLabel>
-    {projects.map((project) => (
-      <ProjectCard project={project} />
-    ))}
+    <ul class="grid gap-4 sm:grid-cols-2">
+      {projects.map((project) => (
+        <ProjectCard project={project} />
+      ))}
+    </ul>
   </section>
 
   <section class="section" aria-labelledby="writing">

@@ -30,6 +30,8 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
 
 ## Conventions
 
+- **UI work: load the `design-language` skill** (`.claude/skills/design-language/SKILL.md`). It
+  covers the tokens, type scale, components, logos and the checklist for any visual change.
 - **No copy in components.** Strings come from `src/data/*` or content frontmatter. Components take
   data as props; pages wire data to components.
 - **The design handoff mockups (Main/Work/Writing/Post/Contact `.dc.html`) are the visual source of

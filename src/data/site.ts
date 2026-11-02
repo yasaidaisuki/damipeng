@@ -67,6 +67,8 @@ export interface NowNextItem {
   before: string;
   org: string;
   after: string;
+  /** Set the company name in its brand typeface. */
+  orgFont?: 'ibm' | 'shopify';
 }
 
 export interface ImpactMetric {
@@ -76,9 +78,12 @@ export interface ImpactMetric {
 
 export interface Project {
   name: string;
-  href?: string;
+  /** Repo URL; the whole card links here. */
+  href: string;
   stack: string[];
   summary: string;
+  /** Extra links shown on the card (e.g. a paper). */
+  links?: { label: string; href: string }[];
 }
 
 export const home = {
@@ -93,6 +98,7 @@ export const home = {
       label: 'Now',
       before: 'SWE intern at ',
       org: 'IBM Skills Network',
+      orgFont: 'ibm',
       after:
         ', third term — Kubernetes, Redis and Terraform on a platform serving 80K monthly users.',
     },
@@ -100,13 +106,14 @@ export const home = {
       label: 'Next',
       before: 'SWE intern at ',
       org: 'Shopify',
+      orgFont: 'shopify',
       after: ', Winter 2027. Computational Math at the University of Waterloo.',
     },
   ] satisfies NowNextItem[],
   sections: {
     about: 'About',
     impact: 'Selected impact',
-    projects: 'Project',
+    projects: 'Projects',
     writing: 'Writing',
   },
   about: [
@@ -124,14 +131,39 @@ export const home = {
   writingEmpty: 'Posts are on the way.',
 };
 
+const repo = (name: string) => `${GITHUB_URL}/${name}`;
+
 export const projects: Project[] = [
   {
     name: 'C Compiler',
-    // TODO: point at the repo once it's public.
-    href: GITHUB_URL,
+    href: repo('c_compiler'),
     stack: ['C++', 'Flex', 'Bison', 'LLVM'],
     summary:
       'End-to-end compiler with a two-pass design — symbol collection, then semantic analysis and LLVM IR codegen — over a type-safe AST built on std::variant.',
+  },
+  {
+    name: 'Parametric Modelling',
+    href: repo('ParametricModelling'),
+    stack: ['C++', 'Maya API', 'CMake'],
+    summary:
+      'A Maya plug-in with custom dependency-graph nodes that generate procedural staircase and arched-bridge meshes in real time, with Perlin-noise surface weathering.',
+  },
+  {
+    name: 'Chess',
+    href: repo('Chess'),
+    stack: ['C++', 'X11'],
+    summary:
+      'Chess engine with standard and atomic variants, three computer difficulty levels and thread-safe move calculation. A differential renderer cut move redraws from 3.5s to 0.1s.',
+  },
+  {
+    name: 'Portfolio Optimization',
+    href: repo('portoflio_optimization'),
+    stack: ['Python', 'Gurobi', 'Linear programming'],
+    summary:
+      "A robust linear program for portfolio selection that adapts Soyster's and Bertsimas–Sim models to worst-case volatility. Team paper for CO 370, Deterministic OR Models.",
+    links: [
+      { label: 'Paper (PDF)', href: `${repo('portoflio_optimization')}/blob/main/paper.pdf` },
+    ],
   },
 ];
 
