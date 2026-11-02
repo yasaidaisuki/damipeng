@@ -29,6 +29,9 @@
   --color-on-accent: #ffffff;
   --color-inverse: #111113;
   --color-on-inverse: #ffffff;
+  /* Company brand colors, used only for hover on company names (IBM Blue 60, Shopify green). */
+  --color-brand-ibm: #0f62fe;
+  --color-brand-shopify: #008060;
 
   --radius-chip: 6px;
   --radius-btn: 8px;
@@ -70,23 +73,26 @@
 }
 
 @layer base {
-  /* Dark: slate navy rather than near-black. */
+  /* Dark: a deep, low-saturation navy rather than pure black. */
   @media (prefers-color-scheme: dark) {
     :root {
-      --color-bg: #131a2a;
-      --color-fg: #eef1f7;
-      --color-body: #cdd3e0;
-      --color-secondary: #b6bdcc;
-      --color-muted: #9aa3b5;
-      --color-hairline: #2a3447;
-      --color-hairline-soft: #212a3b;
-      --color-border-strong: #36415a;
-      --color-surface: #1a2234;
-      --color-chip: #1f2839;
+      --color-bg: #10141c;
+      --color-fg: #edeff3;
+      --color-body: #cbcfd8;
+      --color-secondary: #b3b8c3;
+      --color-muted: #979daa;
+      --color-hairline: #262c38;
+      --color-hairline-soft: #1c212b;
+      --color-border-strong: #323946;
+      --color-surface: #161b25;
+      --color-chip: #1a202b;
       --color-accent: #8ca4f5;
-      --color-on-accent: #131a2a;
-      --color-inverse: #eef1f7;
-      --color-on-inverse: #131a2a;
+      --color-on-accent: #10141c;
+      --color-inverse: #edeff3;
+      --color-on-inverse: #10141c;
+      /* IBM Blue 40 (Carbon's dark-theme blue) and Shopify's logo green read better on navy. */
+      --color-brand-ibm: #78a9ff;
+      --color-brand-shopify: #95bf47;
     }
   }
 

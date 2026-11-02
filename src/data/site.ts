@@ -67,8 +67,10 @@ export interface NowNextItem {
   before: string;
   org: string;
   after: string;
-  /** Set the company name in its brand typeface. */
-  orgFont?: 'ibm' | 'shopify';
+  /** Company website; the name links here. */
+  orgHref: string;
+  /** Set the company name in its brand typeface and hover color. */
+  orgBrand?: 'ibm' | 'shopify';
 }
 
 export interface ImpactMetric {
@@ -98,7 +100,8 @@ export const home = {
       label: 'Now',
       before: 'SWE intern at ',
       org: 'IBM Skills Network',
-      orgFont: 'ibm',
+      orgHref: 'https://skills.network',
+      orgBrand: 'ibm',
       after:
         ', third term — Kubernetes, Redis and Terraform on a platform serving 80K monthly users.',
     },
@@ -106,13 +109,14 @@ export const home = {
       label: 'Next',
       before: 'SWE intern at ',
       org: 'Shopify',
-      orgFont: 'shopify',
+      orgHref: 'https://www.shopify.com',
+      orgBrand: 'shopify',
       after: ', Winter 2027. Computational Math at the University of Waterloo.',
     },
   ] satisfies NowNextItem[],
   sections: {
     about: 'About',
-    impact: 'Selected impact',
+    impact: 'Impact',
     projects: 'Projects',
     writing: 'Writing',
   },
@@ -123,8 +127,15 @@ export const home = {
   ],
   impact: [
     { value: '−99%', detail: 'Redis memory, by moving uploads to direct-to-S3 pre-signed URLs' },
-    { value: '−71%', detail: 'Latency after migrating LLM/STT models, with zero eval regressions' },
-    { value: '83%', detail: 'of users stopped losing WebSocket events via Redis Pub/Sub fan-out' },
+    {
+      value: '80K',
+      detail: 'monthly users on a React/TypeScript SPA re-architected from a 20K-LOC legacy app',
+    },
+    {
+      value: '$17K/yr',
+      detail:
+        'saved in infra and API costs: Kubernetes worker isolation plus an LLM/STT model migration',
+    },
   ] satisfies ImpactMetric[],
   impactLink: 'Full work history →',
   writingAll: 'All posts →',

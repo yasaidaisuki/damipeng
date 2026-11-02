@@ -26,25 +26,27 @@ source of truth. The tokens in `src/styles/global.css` encode them. **If this fi
 
 ### Color
 
-| Token                    | Light              | Dark                  | Use                                             |
-| ------------------------ | ------------------ | --------------------- | ----------------------------------------------- |
-| `bg`                     | `#ffffff`          | `#131a2a`             | Page background (dark is slate navy, not black) |
-| `fg`                     | `#111113`          | `#eef1f7`             | Headings, primary text, link default            |
-| `body`                   | `#26262c`          | `#cdd3e0`             | Long-form paragraphs, bullets                   |
-| `secondary`              | `#3a3a42`          | `#b6bdcc`             | Intros, summaries, card body                    |
-| `muted`                  | `#5b5b66`          | `#9aa3b5`             | Labels, dates, meta, inactive nav               |
-| `hairline`               | `#e6e6ea`          | `#2a3447`             | Section rules, card borders                     |
-| `hairline-soft`          | `#efeff2`          | `#212a3b`             | Dividers between list rows                      |
-| `border-strong`          | `#dadae0`          | `#36415a`             | Secondary buttons, idle chips, card hover       |
-| `surface`                | `#f6f6f8`          | `#1a2234`             | Code blocks                                     |
-| `chip`                   | `#f3f3f5`          | `#1f2839`             | Tech tag background                             |
-| `accent`                 | `#2347c6`          | `#8ca4f5`             | Links, metrics, status dot, focus ring          |
-| `on-accent`              | `#ffffff`          | `#131a2a`             | Text on accent                                  |
-| `inverse` / `on-inverse` | `#111113` / `#fff` | `#eef1f7` / `#131a2a` | Primary button, active filter pill              |
+| Token                    | Light              | Dark                  | Use                                                              |
+| ------------------------ | ------------------ | --------------------- | ---------------------------------------------------------------- |
+| `bg`                     | `#ffffff`          | `#10141c`             | Page background (dark is a deep, low-saturation navy, not black) |
+| `fg`                     | `#111113`          | `#edeff3`             | Headings, primary text, link default                             |
+| `body`                   | `#26262c`          | `#cbcfd8`             | Long-form paragraphs, bullets                                    |
+| `secondary`              | `#3a3a42`          | `#b3b8c3`             | Intros, summaries, card body                                     |
+| `muted`                  | `#5b5b66`          | `#979daa`             | Labels, dates, meta, inactive nav                                |
+| `hairline`               | `#e6e6ea`          | `#262c38`             | Section rules, card borders                                      |
+| `hairline-soft`          | `#efeff2`          | `#1c212b`             | Dividers between list rows                                       |
+| `border-strong`          | `#dadae0`          | `#323946`             | Secondary buttons, idle chips, card hover                        |
+| `surface`                | `#f6f6f8`          | `#161b25`             | Code blocks                                                      |
+| `chip`                   | `#f3f3f5`          | `#1a202b`             | Tech tag background                                              |
+| `accent`                 | `#2347c6`          | `#8ca4f5`             | Links, metrics, status dot, focus ring                           |
+| `on-accent`              | `#ffffff`          | `#10141c`             | Text on accent                                                   |
+| `inverse` / `on-inverse` | `#111113` / `#fff` | `#edeff3` / `#10141c` | Primary button, active filter pill                               |
+| `brand-ibm`              | `#0f62fe`          | `#78a9ff`             | Hover on IBM's name (IBM Blue 60; Carbon Blue 40 in dark)        |
+| `brand-shopify`          | `#008060`          | `#95bf47`             | Hover on Shopify's name (brand green; logo green in dark)        |
 
 Dark mode is `prefers-color-scheme` only. `global.css` redefines these variables, so **never write
 `dark:` variants**. Every color change must pass `node scripts/contrast.mjs` (update its table
-too). Brand colors exist only inside logos and the OG image renderer.
+too). Brand colors appear only in logos, the OG image renderer, and the `brand-*` hover tokens.
 
 ### Type
 
@@ -97,7 +99,8 @@ after:inset-0` title link, with secondary links at `relative z-10`.
 capHeight, padding? }`. Logos are scaled so their capital letters are 24px tall, not by box
   height. Measure `capHeight` from the artwork. Official files the brand says not to alter
   (UWaterloo PNGs) stay untouched, and `padding` collapses their clear space with negative margins.
-  The home page names companies in text with their brand font, without logos.
+  The home page names companies in text with their brand font, without logos. Those names link to
+  the company site and fade (`duration-300`) to their `brand-*` color on hover.
 
 ## Interaction and accessibility
 

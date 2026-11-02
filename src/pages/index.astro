@@ -45,15 +45,18 @@ const secondaryCtas = [links.github, links.linkedin, { ...links.resume, label: h
         <h2 class="section-label mb-2 text-xs">{item.label}</h2>
         <p class="text-body-lg leading-normal">
           {item.before}
-          <strong
+          <a
+            href={item.orgHref}
+            target="_blank"
+            rel="noopener noreferrer"
             class:list={[
-              'font-semibold',
-              item.orgFont === 'ibm' && 'font-brand-ibm',
-              item.orgFont === 'shopify' && 'font-brand-shopify',
+              'text-fg font-semibold duration-300',
+              item.orgBrand === 'ibm' && 'font-brand-ibm hover:text-brand-ibm',
+              item.orgBrand === 'shopify' && 'font-brand-shopify hover:text-brand-shopify',
             ]}
           >
             {item.org}
-          </strong>
+          </a>
           {item.after}
         </p>
       </div>

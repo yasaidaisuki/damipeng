@@ -25,19 +25,23 @@ const themes = {
     onAccent: '#FFFFFF',
     inverse: '#111113',
     onInverse: '#FFFFFF',
+    brandIbm: '#0F62FE',
+    brandShopify: '#008060',
   },
   dark: {
-    bg: '#131A2A',
-    surface: '#1A2234',
-    chip: '#1F2839',
-    fg: '#EEF1F7',
-    body: '#CDD3E0',
-    secondary: '#B6BDCC',
-    muted: '#9AA3B5',
+    bg: '#10141C',
+    surface: '#161B25',
+    chip: '#1A202B',
+    fg: '#EDEFF3',
+    body: '#CBCFD8',
+    secondary: '#B3B8C3',
+    muted: '#979DAA',
     accent: '#8CA4F5',
-    onAccent: '#131A2A',
-    inverse: '#EEF1F7',
-    onInverse: '#131A2A',
+    onAccent: '#10141C',
+    inverse: '#EDEFF3',
+    onInverse: '#10141C',
+    brandIbm: '#78A9FF',
+    brandShopify: '#95BF47',
   },
 };
 
@@ -54,6 +58,8 @@ for (const [name, t] of Object.entries(themes)) {
     ['secondary/bg', t.secondary, t.bg, 4.5],
     ['secondary/chip', t.secondary, t.chip, 4.5],
     ['onInverse/inverse', t.onInverse, t.inverse, 4.5],
+    ['brandIbm/bg', t.brandIbm, t.bg, 4.5],
+    ['brandShopify/bg', t.brandShopify, t.bg, 4.5],
   ];
   for (const [label, a, b, min] of checks) {
     const r = ratio(a, b);
