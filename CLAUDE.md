@@ -36,7 +36,7 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
   truth.** Their shared values live as tokens in `src/styles/global.css`; match new UI to them.
 - **Design tokens only.** Use the semantic utilities from `@theme`. Colors: `bg`, `fg`, `body`,
   `secondary`, `muted`, `hairline`, `hairline-soft`, `border-strong`, `surface`, `chip`, `accent`,
-  `inverse`/`on-inverse`, `tile`. Type: `text-display`, `text-h1`, `text-h1-post`, `text-h2`, `text-pitch`,
+  `inverse`/`on-inverse`. Type: `text-display`, `text-h1`, `text-h1-post`, `text-h2`, `text-pitch`,
   `text-lead`, `text-prose`, `text-body-lg`, `text-ui` (15px), `text-meta` (13px), `text-wordmark`,
   `text-metric`. Also `rounded-chip|btn|card`, `max-w-content|post`, `min-h-touch`, `font-mono`,
   `font-display`, `font-plex-mono`. No raw hex or arbitrary color values in markup. The exceptions are brand bar colors in `work.ts` and the OG
@@ -53,9 +53,10 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
   `:focus-visible` rings, `<time datetime>`. ESLint runs jsx-a11y in strict mode.
 - Drafts: `draft: true` posts render in dev only; `getPosts()` handles the filtering. A post's first
   tag is its topic (shown in list and post meta), so use human-readable tags ("Distributed systems").
-- Logos: set `logo: '/logos/x.svg'` in `work.ts`. `lib/logos.ts` falls back to a text wordmark if the
-  file is missing. `brand.logoTile: 'dark'` puts white logos on a dark tile, and `brand.wordmark`
-  renders styled text instead.
+- Logos: SVGs live in `public/logos/`. Set `logo: { src, darkSrc? }` in `work.ts`; `darkSrc` is swapped
+  in under `prefers-color-scheme: dark` via `<picture>`. `lib/logos.ts` reads each SVG's viewBox at build
+  time to set width/height (40px tall), and falls back to a text wordmark if the file is missing.
+  `brand.wordmark` renders styled text instead (Waterloo).
 
 ## Phase 2 hooks
 

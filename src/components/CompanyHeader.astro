@@ -23,19 +23,18 @@ const logo = brand.wordmark ? undefined : resolveLogo(entry.logo);
 </div>
 <div class="flex flex-wrap items-center gap-3">
   {logo ? (
-    <h2
-      class:list={[
-        'inline-flex items-center',
-        brand.logoTile === 'dark' && 'bg-tile rounded-btn h-12 px-3',
-      ]}
-    >
-      <img
-        src={logo}
-        alt={company}
-        height="40"
-        class:list={['w-auto', brand.logoTile === 'dark' ? 'h-7' : 'h-10']}
-        decoding="async"
-      />
+    <h2 class="flex items-center">
+      <picture>
+        {logo.darkSrc && <source srcset={logo.darkSrc} media="(prefers-color-scheme: dark)" />}
+        <img
+          src={logo.src}
+          alt={company}
+          width={logo.width}
+          height={logo.height}
+          class="h-10 w-auto"
+          decoding="async"
+        />
+      </picture>
     </h2>
   ) : brand.wordmark === 'waterloo' ? (
     <h2 class="font-display text-wordmark font-bold uppercase">{company}</h2>

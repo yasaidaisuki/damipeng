@@ -8,16 +8,24 @@ export interface WorkTerm {
 }
 
 export interface WorkBrand {
-  /** Colors for the 40×4px bar above the company name; several colors render as equal segments. */
+  /**
+   * Colors for the 40×4px bar above the company name; several colors render as equal segments.
+   * Use a token (e.g. 'var(--color-fg)') for black segments so they stay visible in dark mode.
+   */
   bar: string[];
   /** Square bar ends instead of the default 2px radius (IBM). */
   squareBar?: boolean;
-  /** Render the logo on a small dark tile (for white logos). */
-  logoTile?: 'dark';
   /** Render the company as a styled text wordmark instead of a logo. */
   wordmark?: 'waterloo';
   /** Typeface for the role line (IBM uses IBM Plex Mono). */
   roleFont?: 'plex-mono';
+}
+
+export interface WorkLogo {
+  /** Path under public/ for light backgrounds, e.g. "/logos/ibm.svg". */
+  src: string;
+  /** Optional variant swapped in under prefers-color-scheme: dark. */
+  darkSrc?: string;
 }
 
 export interface WorkEntry {
@@ -32,8 +40,8 @@ export interface WorkEntry {
   terms: WorkTerm[];
   bullets: string[];
   tags: string[];
-  /** Path under public/, e.g. "/logos/ibm.svg". Falls back to a text wordmark if the file is missing. */
-  logo?: string;
+  /** Falls back to a text wordmark if the file is missing. */
+  logo?: WorkLogo;
   brand: WorkBrand;
 }
 
@@ -48,7 +56,7 @@ export const work: WorkEntry[] = [
     terms: [],
     bullets: [],
     tags: [],
-    logo: '/logos/shopify.svg',
+    logo: { src: '/logos/shopify.svg', darkSrc: '/logos/shopify-dark.svg' },
     brand: { bar: ['#008060'] },
   },
   {
@@ -94,7 +102,7 @@ export const work: WorkEntry[] = [
       'React',
       'LangGraph',
     ],
-    logo: '/logos/ibm.svg',
+    logo: { src: '/logos/ibm.svg' },
     brand: { bar: ['#0F62FE'], squareBar: true, roleFont: 'plex-mono' },
   },
   {
@@ -109,7 +117,11 @@ export const work: WorkEntry[] = [
       'Extended accelerated optimization algorithms for 10% faster convergence than baseline optimizers.',
     ],
     tags: [],
-    brand: { bar: ['#FED34C', '#F2B705', '#111113'], squareBar: true, wordmark: 'waterloo' },
+    brand: {
+      bar: ['#FED34C', '#F2B705', 'var(--color-fg)'],
+      squareBar: true,
+      wordmark: 'waterloo',
+    },
   },
   {
     id: 'civiconnect',
@@ -124,8 +136,7 @@ export const work: WorkEntry[] = [
       'Integrated the Stripe API to automate billing across 60+ monthly transactions.',
     ],
     tags: [],
-    logo: '/logos/civiconnect.svg',
-    // TODO: swap for Civiconnect's brand color (the mockup leaves it as a placeholder).
-    brand: { bar: ['#111113'], logoTile: 'dark' },
+    logo: { src: '/logos/civiconnect.svg', darkSrc: '/logos/civiconnect-dark.svg' },
+    brand: { bar: ['#143980'] },
   },
 ];

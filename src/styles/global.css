@@ -27,7 +27,6 @@
   --color-on-accent: #ffffff;
   --color-inverse: #111113;
   --color-on-inverse: #ffffff;
-  --color-tile: #111113;
 
   --radius-chip: 6px;
   --radius-btn: 8px;
@@ -88,7 +87,6 @@
       --color-on-accent: #0d0d10;
       --color-inverse: #ededf0;
       --color-on-inverse: #0d0d10;
-      --color-tile: #1c1c22;
     }
   }
 
