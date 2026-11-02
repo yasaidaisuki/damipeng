@@ -10,7 +10,7 @@ export const site = {
   handle: 'dami.peng',
   title: 'Dami Peng · Software Engineer',
   description:
-    'Dami Peng is a software engineer working on backend systems and infrastructure. Computational Math at the University of Waterloo, graduating Aug 2027.',
+    'Dami Peng is a software engineer building backend systems and infrastructure. Computational Mathematics at the University of Waterloo, graduating Aug 2027.',
   locale: 'en_CA',
   email: 'peng.dingkai@gmail.com',
   github: GITHUB_URL,
@@ -89,8 +89,9 @@ export interface Project {
 }
 
 export const home = {
-  pitch:
-    'Software engineer working on backend systems and infrastructure — the queues, workers and deploys that keep products fast and boring in production.',
+  pitch: 'Software engineer building backend systems and infrastructure.',
+  pitchDetail:
+    'I like designing systems that work reliably in production, understanding the engineering decisions behind them, and occasionally going all the way down to the underlying implementation.',
   ctas: {
     work: 'See my work',
     resume: 'Résumé (PDF)',
@@ -100,18 +101,18 @@ export const home = {
       label: 'Now',
       before: 'SWE intern at ',
       org: 'IBM Skills Network',
-      orgHref: 'https://skills.network',
+      orgHref: 'https://skills.network/',
       orgBrand: 'ibm',
       after:
-        ', third term — Kubernetes, Redis and Terraform on a platform serving 80K monthly users.',
+        ', third term — working on backend infrastructure, distributed workers, Kubernetes, Redis and Terraform for a platform serving 80K monthly users.',
     },
     {
       label: 'Next',
       before: 'Engineering intern at ',
       org: 'Shopify',
-      orgHref: 'https://www.shopify.com',
+      orgHref: 'https://www.shopify.com/',
       orgBrand: 'shopify',
-      after: ', Winter 2027. Computational Math at the University of Waterloo.',
+      after: ', Winter 2027. Computational Mathematics at the University of Waterloo.',
     },
   ] satisfies NowNextItem[],
   sections: {
@@ -121,9 +122,9 @@ export const home = {
     writing: 'Writing',
   },
   about: [
-    'I like problems where the fix is structural: moving uploads off the server and straight to S3, splitting workers from the API so one can fail without taking the other down, making a lost event impossible instead of rare.',
-    'Before backend, I spent a term on optimization research — benchmarking accelerated gradient methods on CIFAR-10 — and I still reach for measurement before opinion. On the side I built a C compiler with Flex, Bison and LLVM, mostly to see how the layers I depend on actually work.',
-    'I write here about the systems I build and what broke along the way.',
+    "I'm drawn to problems where the right fix is structural: separating workers from API servers, getting events reliably across replicas, or making background jobs observable without digging through production pods. I enjoy thinking about system boundaries, failure modes and the tradeoffs behind an architecture. I care less about adding another layer of abstraction and more about making the underlying system work well.",
+    "At the same time, I like understanding how things work beneath those abstractions. Outside of work, I spend a lot of time building projects in C++. I've built a C compiler with Flex, Bison and LLVM, and enjoy exploring the mechanics behind the tools and systems I use. I also spent a term on optimization research, benchmarking accelerated gradient methods on CIFAR-10 — an experience that reinforced my preference for measurement over intuition.",
+    'I write here about the systems I build, the engineering decisions behind them, what breaks, and the things I learn along the way.',
   ],
   impact: [
     { value: '−99%', detail: 'Redis memory, by moving uploads to direct-to-S3 pre-signed URLs' },
