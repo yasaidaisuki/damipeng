@@ -1,0 +1,169 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/*
+ * Design tokens. Components use the generated utilities (bg-bg, text-muted, border-hairline,
+ * max-w-content, rounded-card, font-mono, …), never raw hex values. Dark mode redefines the same
+ * variables below, so no `dark:` variants are needed. Contrast is checked by scripts/contrast.mjs.
+ */
+@theme {
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+
+  --color-bg: #ffffff;
+  --color-surface: #f7f7f9;
+  --color-fg: #111113;
+  --color-body: #26262c;
+  --color-muted: #5b5b66;
+  --color-hairline: #e6e6ea;
+  --color-accent: #2347c6;
+  --color-on-accent: #ffffff;
+  --color-tile: #111113;
+
+  --radius-chip: 8px;
+  --radius-card: 10px;
+
+  --container-content: 760px;
+  --container-post: 680px;
+
+  --spacing-touch: 44px;
+  --spacing-section: 4.5rem;
+
+  --text-label: 0.75rem;
+  --text-label--letter-spacing: 0.08em;
+  --text-label--line-height: 1rem;
+}
+
+@layer base {
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-bg: #0d0d10;
+      --color-surface: #151519;
+      --color-fg: #ededf0;
+      --color-body: #c8c8d0;
+      --color-muted: #9c9ca8;
+      --color-hairline: #2a2a31;
+      --color-accent: #7d97f2;
+      --color-on-accent: #0d0d10;
+      --color-tile: #1c1c22;
+    }
+  }
+
+  :root {
+    color-scheme: light dark;
+  }
+
+  html {
+    @apply bg-bg font-sans text-body antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    @apply bg-accent text-on-accent;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-semibold tracking-tight text-balance text-fg;
+  }
+
+  a {
+    @apply underline-offset-4;
+  }
+
+  :focus-visible {
+    @apply rounded-sm outline-2 outline-offset-2 outline-accent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  .section-label {
+    @apply font-mono text-label font-medium text-muted uppercase;
+  }
+
+  .section {
+    @apply border-t border-hairline py-section first:border-t-0;
+  }
+
+  .btn {
+    @apply inline-flex min-h-touch items-center justify-center gap-2 rounded-chip border px-4 text-sm font-medium no-underline transition-colors;
+  }
+
+  .btn-primary {
+    @apply border-accent bg-accent text-on-accent hover:opacity-90;
+  }
+
+  .btn-secondary {
+    @apply border-hairline bg-bg text-fg hover:border-muted;
+  }
+
+  .chip {
+    @apply inline-flex items-center rounded-chip border border-hairline px-2 py-0.5 font-mono text-xs text-muted;
+  }
+
+  .card {
+    @apply rounded-card border border-hairline bg-surface p-5;
+  }
+
+  /* Tailwind Typography mapped onto the site tokens, for MDX posts. */
+  .prose-site {
+    @apply prose max-w-none;
+    --tw-prose-body: var(--color-body);
+    --tw-prose-headings: var(--color-fg);
+    --tw-prose-lead: var(--color-body);
+    --tw-prose-links: var(--color-accent);
+    --tw-prose-bold: var(--color-fg);
+    --tw-prose-counters: var(--color-muted);
+    --tw-prose-bullets: var(--color-muted);
+    --tw-prose-hr: var(--color-hairline);
+    --tw-prose-quotes: var(--color-fg);
+    --tw-prose-quote-borders: var(--color-hairline);
+    --tw-prose-captions: var(--color-muted);
+    --tw-prose-code: var(--color-fg);
+    --tw-prose-pre-code: inherit;
+    --tw-prose-pre-bg: var(--color-surface);
+    --tw-prose-th-borders: var(--color-hairline);
+    --tw-prose-td-borders: var(--color-hairline);
+  }
+
+  .prose-site :where(pre) {
+    @apply rounded-card border border-hairline font-mono text-sm;
+  }
+
+  .prose-site :where(code):not(:where(pre code)) {
+    @apply rounded-chip border border-hairline bg-surface px-1.5 py-0.5 font-normal;
+  }
+
+  .prose-site :where(code):not(:where(pre code))::before,
+  .prose-site :where(code):not(:where(pre code))::after {
+    content: none;
+  }
+}
+
+/* Shiki dual themes (markdown.shikiConfig.defaultColor = false). Backgrounds come from the tokens. */
+.astro-code {
+  background-color: var(--color-surface) !important;
+}
+
+.astro-code span {
+  color: var(--shiki-light);
+}
+
+@media (prefers-color-scheme: dark) {
+  .astro-code span {
+    color: var(--shiki-dark);
+  }
+}

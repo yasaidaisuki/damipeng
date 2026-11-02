@@ -1,0 +1,21 @@
+---
+import '@fontsource/barlow-condensed/latin-700.css';
+import TimelineEntry from '@/components/TimelineEntry.astro';
+import { pages } from '@/data/site';
+import { work } from '@/data/work';
+import Base from '@/layouts/Base.astro';
+
+const page = pages.work;
+---
+
+<Base title={page.title} description={page.description} image="/og/work.png">
+  <header class="pt-16 pb-10">
+    <h1 class="text-4xl">{page.heading}</h1>
+    <p class="text-muted mt-3 text-lg">{page.intro}</p>
+  </header>
+  <ol>
+    {work.map((entry) => (
+      <TimelineEntry entry={entry} />
+    ))}
+  </ol>
+</Base>

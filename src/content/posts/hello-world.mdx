@@ -1,0 +1,28 @@
+---
+title: 'Fanning out WebSocket events across API replicas'
+date: 2026-11-01
+summary: 'Why 83% of users were missing realtime updates, and how a Redis Pub/Sub fan-out fixed it.'
+tags: ['infrastructure', 'redis', 'realtime']
+draft: true
+---
+
+This is a draft sample post. It shows up in `npm run dev` but is excluded from production builds.
+
+## The problem
+
+Workers emitted events to whichever API replica they happened to be connected to. With six replicas behind
+a load balancer, most clients were connected somewhere else, so most events never reached them.
+
+## The fix
+
+Every worker publishes to a Redis channel, and every API replica subscribes and forwards to its own sockets:
+
+```ts
+const sub = redis.duplicate();
+await sub.subscribe('job-events', (raw) => {
+  const event = JSON.parse(raw) as JobEvent;
+  io.to(event.jobId).emit(event.type, event.payload);
+});
+```
+
+> Draft. More to come.

@@ -1,0 +1,56 @@
+---
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import '@/styles/global.css';
+import geistWoff2 from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
+import Footer from '@/components/Footer.astro';
+import Nav from '@/components/Nav.astro';
+import SEO, { type Props as SEOProps } from '@/components/SEO.astro';
+import { pages, site } from '@/data/site';
+
+type Props = SEOProps & {
+  /** Max width of <main>: "content" (760px) or "post" (680px). */
+  width?: 'content' | 'post';
+};
+
+const { width = 'content', ...seo } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d0d10" media="(prefers-color-scheme: dark)" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="author" content={site.name} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${site.name} · Writing`}
+      href="/rss.xml"
+    />
+    <link rel="preload" href={geistWoff2} as="font" type="font/woff2" crossorigin />
+    <SEO {...seo} />
+    <slot name="head" />
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    <a
+      href="#main"
+      class="bg-accent text-on-accent rounded-chip sr-only z-50 px-4 py-3 focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+    >
+      {pages.skipLink}
+    </a>
+    <Nav />
+    <main
+      id="main"
+      class:list={['mx-auto w-full flex-1 px-5', width === 'post' ? 'max-w-post' : 'max-w-content']}
+    >
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

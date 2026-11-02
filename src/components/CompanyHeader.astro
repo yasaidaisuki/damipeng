@@ -1,0 +1,42 @@
+---
+import type { WorkEntry } from '@/data/work';
+import { resolveLogo } from '@/lib/logos';
+
+interface Props {
+  entry: WorkEntry;
+}
+
+const { entry } = Astro.props;
+const { company, brand } = entry;
+const logo = brand.wordmark ? undefined : resolveLogo(entry.logo);
+---
+
+<div class="flex flex-col gap-3">
+  <div class="flex h-1 w-10 overflow-hidden rounded-full" aria-hidden="true">
+    {brand.bar.map((color) => (
+      <span class="h-full flex-1" style={{ backgroundColor: color }} />
+    ))}
+  </div>
+  <h2 class="text-fg">
+    {logo ? (
+      <span
+        class:list={['inline-flex', brand.logoTile === 'dark' && 'bg-tile rounded-chip px-3 py-2']}
+      >
+        <img
+          src={logo}
+          alt={company}
+          height="40"
+          class:list={['w-auto', brand.logoTile === 'dark' ? 'h-6' : 'h-10']}
+          loading="lazy"
+          decoding="async"
+        />
+      </span>
+    ) : brand.wordmark === 'waterloo' ? (
+      <span class="font-display text-[1.75rem] leading-none font-bold tracking-wide uppercase">
+        {company}
+      </span>
+    ) : (
+      <span class="text-2xl">{company}</span>
+    )}
+  </h2>
+</div>

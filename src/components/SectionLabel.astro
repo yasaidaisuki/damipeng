@@ -1,0 +1,12 @@
+---
+interface Props {
+  id?: string;
+  as?: 'h2' | 'p';
+}
+
+const { id, as: Tag = 'h2' } = Astro.props;
+---
+
+<Tag id={id} class="section-label mb-6">
+  <slot />
+</Tag>

@@ -1,0 +1,33 @@
+---
+import PostFilter, { type PostSummary } from '@/components/islands/PostFilter';
+import { pages } from '@/data/site';
+import Base from '@/layouts/Base.astro';
+import { formatDate, isoDate } from '@/lib/format';
+import { getPosts, getTags, postUrl } from '@/lib/posts';
+
+const page = pages.writing;
+const posts = await getPosts();
+const summaries: PostSummary[] = posts.map((post) => ({
+  slug: post.id,
+  url: postUrl(post),
+  title: post.data.title,
+  summary: post.data.summary,
+  dateLabel: formatDate(post.data.date),
+  dateIso: isoDate(post.data.date),
+  tags: post.data.tags,
+  draft: post.data.draft,
+}));
+---
+
+<Base title={page.title} description={page.description} image="/og/writing.png">
+  <header class="pt-16 pb-10">
+    <h1 class="text-4xl">{page.heading}</h1>
+    <p class="text-muted mt-3 text-lg">{page.intro}</p>
+  </header>
+  <PostFilter
+    client:load
+    posts={summaries}
+    tags={getTags(posts)}
+    labels={{ filter: page.filterLabel, all: page.allTopics, empty: page.empty }}
+  />
+</Base>
