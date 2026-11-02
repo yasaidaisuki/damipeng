@@ -107,7 +107,7 @@ export const home = {
     },
     {
       label: 'Next',
-      before: 'SWE intern at ',
+      before: 'Engineering intern at ',
       org: 'Shopify',
       orgHref: 'https://www.shopify.com',
       orgBrand: 'shopify',

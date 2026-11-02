@@ -44,7 +44,7 @@ export const work: WorkEntry[] = [
   {
     id: 'shopify',
     company: 'Shopify',
-    role: 'Software Engineer Intern',
+    role: 'Engineering Intern',
     dates: 'Winter 2027',
     location: 'Toronto',
     status: 'incoming',
@@ -100,6 +100,7 @@ export const work: WorkEntry[] = [
       'Docker',
       'GitOps',
       'NGINX',
+      'WebSockets',
     ],
     logo: { src: '/logos/ibm.svg', capHeight: 1 },
   },
