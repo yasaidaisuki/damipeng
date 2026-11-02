@@ -44,13 +44,17 @@ const { width = 'content', ...seo } = Astro.props;
     >
       {pages.skipLink}
     </a>
-    <Nav />
-    <main
-      id="main"
-      class:list={['mx-auto w-full flex-1 px-5', width === 'post' ? 'max-w-post' : 'max-w-content']}
+    <div
+      class:list={[
+        'mx-auto flex w-full flex-1 flex-col px-6',
+        width === 'post' ? 'max-w-post' : 'max-w-content',
+      ]}
     >
-      <slot />
-    </main>
-    <Footer />
+      <Nav />
+      <main id="main" class="flex-1">
+        <slot />
+      </main>
+      <Footer />
+    </div>
   </body>
 </html>

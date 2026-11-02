@@ -1,31 +1,19 @@
 ---
 import { links, pages, site } from '@/data/site';
-
-const year = new Date().getFullYear();
-const items = [
-  links.email,
-  links.github,
-  links.linkedin,
-  { label: pages.footer.rss, href: '/rss.xml' },
-];
 ---
 
-<footer class="border-hairline mt-section border-t">
-  <div class="max-w-content text-muted mx-auto flex flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 py-6 font-mono text-xs">
-    <p>
-      © {year} {site.name}
-    </p>
-    <ul class="flex flex-wrap gap-x-1">
-      {items.map((item) => (
-        <li>
-          <a
-            href={item.href}
-            class="min-h-touch hover:text-fg inline-flex items-center px-2 no-underline"
-          >
-            {item.label}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </div>
+<footer class="border-hairline text-meta text-muted flex flex-wrap items-center justify-between gap-3 border-t pt-8 pb-14 font-mono">
+  <p>{site.meta}</p>
+  <ul class="flex flex-wrap gap-x-5">
+    <li>
+      <a href="/rss.xml" class="text-muted">
+        {pages.footer.rss}
+      </a>
+    </li>
+    <li>
+      <a href={links.email.href} class="text-muted">
+        {site.email}
+      </a>
+    </li>
+  </ul>
 </footer>

@@ -9,17 +9,19 @@ import { formatDate, isoDate } from '@/lib/format';
 import { getPosts, postUrl } from '@/lib/posts';
 
 const latest = (await getPosts()).slice(0, 3);
-const secondaryCtas = [links.github, links.linkedin, links.resume];
+const secondaryCtas = [links.github, links.linkedin, { ...links.resume, label: home.ctas.resume }];
 ---
 
 <Base>
-  <section class="pt-16 pb-section sm:pt-24" aria-labelledby="hero-heading">
-    <StatusLine />
-    <h1 id="hero-heading" class="mt-6 text-4xl sm:text-5xl">
+  <section class="pt-30 pb-18" aria-labelledby="hero-heading">
+    <div class="mb-5">
+      <StatusLine />
+    </div>
+    <h1 id="hero-heading" class="text-display">
       {site.name}
     </h1>
-    <p class="mt-4 max-w-[36rem] text-lg leading-relaxed sm:text-xl">{home.pitch}</p>
-    <div class="mt-8 flex flex-wrap gap-3">
+    <p class="text-pitch text-secondary mt-5 max-w-[600px]">{home.pitch}</p>
+    <div class="mt-9 flex flex-wrap gap-3">
       <a href="/work" class="btn btn-primary">
         {home.ctas.work}
       </a>
@@ -35,23 +37,22 @@ const secondaryCtas = [links.github, links.linkedin, links.resume];
     </div>
   </section>
 
-  <section class="section" aria-labelledby="now-next">
-    <SectionLabel id="now-next">{home.sections.nowNext}</SectionLabel>
-    <div class="grid gap-8 sm:grid-cols-2">
-      {home.nowNext.map((item) => (
-        <div>
-          <p class="text-accent font-mono text-sm">{item.label}</p>
-          <h3 class="mt-2 text-lg">{item.title}</h3>
-          <p class="text-muted mt-1 font-mono text-sm">{item.period}</p>
-          <p class="mt-3 leading-relaxed">{item.body}</p>
-        </div>
-      ))}
-    </div>
+  <section class="section grid gap-8 sm:grid-cols-2" aria-label="Now and next">
+    {home.nowNext.map((item) => (
+      <div>
+        <h2 class="section-label mb-2 text-xs">{item.label}</h2>
+        <p class="text-body-lg leading-normal">
+          {item.before}
+          <strong class="font-semibold">{item.org}</strong>
+          {item.after}
+        </p>
+      </div>
+    ))}
   </section>
 
   <section class="section" aria-labelledby="about">
     <SectionLabel id="about">{home.sections.about}</SectionLabel>
-    <div class="space-y-4 text-lg leading-relaxed">
+    <div class="text-body-lg text-body flex flex-col gap-4">
       {home.about.map((paragraph) => (
         <p>{paragraph}</p>
       ))}
@@ -59,12 +60,17 @@ const secondaryCtas = [links.github, links.linkedin, links.resume];
   </section>
 
   <section class="section" aria-labelledby="impact">
-    <SectionLabel id="impact">{home.sections.impact}</SectionLabel>
+    <SectionLabel id="impact" class="mb-6">
+      {home.sections.impact}
+    </SectionLabel>
     <ul class="grid gap-4 sm:grid-cols-3">
       {home.impact.map((metric) => (
         <MetricCard metric={metric} />
       ))}
     </ul>
+    <a href="/work" class="link-accent mt-3">
+      {home.impactLink}
+    </a>
   </section>
 
   <section class="section" aria-labelledby="projects">
@@ -75,32 +81,28 @@ const secondaryCtas = [links.github, links.linkedin, links.resume];
   </section>
 
   <section class="section" aria-labelledby="writing">
-    <div class="flex items-baseline justify-between gap-4">
-      <SectionLabel id="writing">{home.sections.writing}</SectionLabel>
-      <a
-        href="/writing"
-        class="text-muted hover:text-fg min-h-touch -mt-4 inline-flex items-center font-mono text-sm no-underline"
-      >
+    <div class="mb-2 flex items-baseline justify-between gap-4">
+      <SectionLabel id="writing" class="">
+        {home.sections.writing}
+      </SectionLabel>
+      <a href="/writing" class="text-accent hover:text-accent py-3 text-sm hover:opacity-80">
         {home.writingAll}
       </a>
     </div>
     {latest.length === 0 ? (
-      <p class="text-muted">{home.writingEmpty}</p>
+      <p class="text-muted py-4">{home.writingEmpty}</p>
     ) : (
-      <ul class="divide-hairline divide-y">
+      <ul>
         {latest.map((post) => (
-          <li class="py-4 first:pt-0">
+          <li class="border-hairline-soft border-b last:border-b-0">
             <a
               href={postUrl(post)}
-              class="group flex flex-col gap-1 no-underline sm:flex-row sm:gap-6"
+              class="text-body-lg flex flex-wrap justify-between gap-2 py-4 leading-normal"
             >
-              <time
-                datetime={isoDate(post.data.date)}
-                class="text-muted shrink-0 font-mono text-sm sm:w-28"
-              >
+              <span>{post.data.title}</span>
+              <time datetime={isoDate(post.data.date)} class="text-meta text-muted font-mono">
                 {formatDate(post.data.date)}
               </time>
-              <span class="text-fg group-hover:text-accent font-medium">{post.data.title}</span>
             </a>
           </li>
         ))}

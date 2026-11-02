@@ -8,11 +8,15 @@ interface Props {
 /** Placeholder for the Phase 2 comments client. Keep the props stable so the page doesn't change. */
 export default function Comments({ slug, heading, placeholder }: Props) {
   return (
-    <section aria-labelledby="comments-heading" data-comments-slug={slug} className="section">
-      <h2 id="comments-heading" className="section-label mb-6">
+    <section
+      aria-labelledby="discussion"
+      data-comments-slug={slug}
+      className="border-t border-hairline pt-10 pb-18"
+    >
+      <h2 id="discussion" className="text-h2">
         {heading}
       </h2>
-      <p className="text-sm text-muted">{placeholder}</p>
+      <p className="mt-5 text-ui text-muted">{placeholder}</p>
     </section>
   );
 }

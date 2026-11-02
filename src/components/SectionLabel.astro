@@ -1,12 +1,12 @@
 ---
 interface Props {
   id?: string;
-  as?: 'h2' | 'p';
+  class?: string;
 }
 
-const { id, as: Tag = 'h2' } = Astro.props;
+const { id, class: className = 'mb-5' } = Astro.props;
 ---
 
-<Tag id={id} class="section-label mb-6">
+<h2 id={id} class:list={['section-label', className]}>
   <slot />
-</Tag>
+</h2>

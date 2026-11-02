@@ -8,10 +8,12 @@ export interface PostSummary {
   /** Pre-formatted on the server so SSR and hydration render identical text. */
   dateLabel: string;
   dateIso: string;
+  /** Primary topic shown in the meta row. */
+  topic?: string | undefined;
   tags: string[];
   draft: boolean;
-  /** Filled in by the Phase 2 comments API; undefined renders nothing. */
-  commentCount?: number;
+  /** Pre-formatted count ("3 comments"), filled in by the Phase 2 comments API. */
+  commentsLabel?: string;
 }
 
 interface Props {
@@ -48,7 +50,7 @@ export default function PostFilter({ posts, tags, labels }: Props) {
   return (
     <div>
       {tags.length > 0 && (
-        <div role="group" aria-label={labels.filter} className="mb-8 flex flex-wrap gap-2">
+        <div role="group" aria-label={labels.filter} className="mt-7 flex flex-wrap gap-2">
           {[null, ...tags].map((tag) => {
             const pressed = active === tag;
             return (
@@ -58,10 +60,11 @@ export default function PostFilter({ posts, tags, labels }: Props) {
                 aria-pressed={pressed}
                 onClick={() => select(tag)}
                 className={[
-                  'min-h-touch rounded-chip border px-3 font-mono text-xs transition-colors',
+                  // 36px visual height per the design; the ::after pads the hit area to 44px.
+                  "relative inline-flex min-h-9 cursor-pointer items-center rounded-full px-3.5 text-sm transition-colors after:absolute after:inset-x-0 after:-inset-y-1 after:content-['']",
                   pressed
-                    ? 'border-accent bg-accent text-on-accent'
-                    : 'border-hairline text-muted hover:border-muted hover:text-fg',
+                    ? 'bg-inverse text-on-inverse'
+                    : 'border border-border-strong text-fg hover:text-accent',
                 ].join(' ')}
               >
                 {tag ?? labels.all}
@@ -72,35 +75,21 @@ export default function PostFilter({ posts, tags, labels }: Props) {
       )}
 
       {visible.length === 0 ? (
-        <p className="text-muted">{labels.empty}</p>
+        <p className="mt-10 pb-12 text-muted">{labels.empty}</p>
       ) : (
-        <ul className="divide-y divide-hairline" aria-live="polite">
+        <ul className="mt-10" aria-live="polite">
           {visible.map((post) => (
-            <li key={post.slug} className="py-6 first:pt-0">
-              <article>
-                <p className="section-label flex flex-wrap gap-x-3">
+            <li key={post.slug} className="border-t border-hairline">
+              <a href={post.url} className="block py-7 text-fg">
+                <p className="flex flex-wrap gap-3 font-mono text-meta text-muted">
                   <time dateTime={post.dateIso}>{post.dateLabel}</time>
+                  {post.topic && <span>{post.topic}</span>}
                   {post.draft && <span>Draft</span>}
-                  <span data-comment-count={post.slug}>
-                    {post.commentCount !== undefined && `${post.commentCount} comments`}
-                  </span>
+                  {post.commentsLabel && <span className="text-accent">{post.commentsLabel}</span>}
                 </p>
-                <h2 className="mt-2 text-xl">
-                  <a href={post.url} className="text-fg no-underline hover:text-accent">
-                    {post.title}
-                  </a>
-                </h2>
-                <p className="mt-2 text-muted">{post.summary}</p>
-                {post.tags.length > 0 && (
-                  <ul className="mt-3 flex flex-wrap gap-2" aria-label="Topics">
-                    {post.tags.map((tag) => (
-                      <li key={tag} className="chip">
-                        {tag}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </article>
+                <h2 className="mt-2.5 text-h2">{post.title}</h2>
+                <p className="mt-2 leading-[1.55] text-secondary">{post.summary}</p>
+              </a>
             </li>
           ))}
         </ul>

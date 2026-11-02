@@ -15,23 +15,29 @@ const ratio = (a, b) => {
 const themes = {
   light: {
     bg: '#FFFFFF',
-    surface: '#F7F7F9',
+    surface: '#F6F6F8',
+    chip: '#F3F3F5',
     fg: '#111113',
     body: '#26262C',
+    secondary: '#3A3A42',
     muted: '#5B5B66',
-    hairline: '#E6E6EA',
     accent: '#2347C6',
     onAccent: '#FFFFFF',
+    inverse: '#111113',
+    onInverse: '#FFFFFF',
   },
   dark: {
     bg: '#0D0D10',
     surface: '#151519',
+    chip: '#1C1C22',
     fg: '#EDEDF0',
     body: '#C8C8D0',
+    secondary: '#B4B4BE',
     muted: '#9C9CA8',
-    hairline: '#2A2A31',
     accent: '#7D97F2',
     onAccent: '#0D0D10',
+    inverse: '#EDEDF0',
+    onInverse: '#0D0D10',
   },
 };
 
@@ -45,6 +51,9 @@ for (const [name, t] of Object.entries(themes)) {
     ['accent/bg', t.accent, t.bg, 4.5],
     ['accent/surface', t.accent, t.surface, 4.5],
     ['onAccent/accent', t.onAccent, t.accent, 4.5],
+    ['secondary/bg', t.secondary, t.bg, 4.5],
+    ['secondary/chip', t.secondary, t.chip, 4.5],
+    ['onInverse/inverse', t.onInverse, t.inverse, 4.5],
   ];
   for (const [label, a, b, min] of checks) {
     const r = ratio(a, b);

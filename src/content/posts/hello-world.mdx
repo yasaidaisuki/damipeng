@@ -1,28 +1,29 @@
 ---
-title: 'Fanning out WebSocket events across API replicas'
+title: 'Every replica gets the message: WebSocket fan-out with Redis Pub/Sub'
 date: 2026-11-01
-summary: 'Why 83% of users were missing realtime updates, and how a Redis Pub/Sub fan-out fixed it.'
-tags: ['infrastructure', 'redis', 'realtime']
+summary: 'Workers emitted events to one API pod; users connected to the other five never saw them. How a broadcast layer fixed it for 83% of sessions.'
+tags: ['Distributed systems']
 draft: true
 ---
 
-This is a draft sample post. It shows up in `npm run dev` but is excluded from production builds.
+We ran six API replicas behind a load balancer. Background workers finished a job, emitted a WebSocket
+event — and that event only reached clients connected to whichever replica the worker happened to talk
+to. Five out of six users were waiting on a spinner that would never resolve.
 
-## The problem
-
-Workers emitted events to whichever API replica they happened to be connected to. With six replicas behind
-a load balancer, most clients were connected somewhere else, so most events never reached them.
-
-## The fix
-
-Every worker publishes to a Redis channel, and every API replica subscribes and forwards to its own sockets:
+The fix was to stop treating the socket server as a single place. Workers publish to a channel; every
+replica subscribes and forwards to its own connected clients.
 
 ```ts
-const sub = redis.duplicate();
-await sub.subscribe('job-events', (raw) => {
-  const event = JSON.parse(raw) as JobEvent;
-  io.to(event.jobId).emit(event.type, event.payload);
+// worker: publish instead of emitting locally
+await redis.publish('ws:events', JSON.stringify({ room, event, payload }));
+
+// every API replica
+sub.subscribe('ws:events');
+sub.on('message', (_, msg) => {
+  const { room, event, payload } = JSON.parse(msg);
+  io.to(room).emit(event, payload);
 });
 ```
 
-> Draft. More to come.
+Draft. Still to write: the trade-offs — at-most-once delivery, why not sticky sessions, and what we
+monitor now.

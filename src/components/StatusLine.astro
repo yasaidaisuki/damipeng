@@ -2,10 +2,7 @@
 import { site } from '@/data/site';
 ---
 
-<p class="text-muted inline-flex items-center gap-2.5 font-mono text-sm">
-  <span class="relative flex size-2" aria-hidden="true">
-    <span class="bg-accent absolute inline-flex size-full animate-ping rounded-full opacity-40 motion-reduce:hidden"></span>
-    <span class="bg-accent relative inline-flex size-2 rounded-full"></span>
-  </span>
+<p class="text-meta text-muted flex items-center gap-2 font-mono">
+  <span class="bg-accent inline-block size-2 shrink-0 rounded-full" aria-hidden="true"></span>
   {site.status}
 </p>

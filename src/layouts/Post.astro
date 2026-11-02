@@ -1,17 +1,17 @@
 ---
 import Comments from '@/components/islands/Comments';
-import TagList from '@/components/TagList.astro';
 import { pages } from '@/data/site';
 import Base from '@/layouts/Base.astro';
 import { formatDate, isoDate } from '@/lib/format';
-import type { Post } from '@/lib/posts';
+import { postTopic, readingMinutes, type Post } from '@/lib/posts';
 
 interface Props {
   post: Post;
 }
 
 const { post } = Astro.props;
-const { title, summary, date, tags, draft } = post.data;
+const { title, summary, date, draft } = post.data;
+const topic = postTopic(post);
 ---
 
 <Base
@@ -23,23 +23,18 @@ const { title, summary, date, tags, draft } = post.data;
   noindex={draft}
   width="post"
 >
-  <article class="pt-12">
-    <a
-      href="/writing"
-      class="min-h-touch text-muted hover:text-fg -ml-1 inline-flex items-center px-1 font-mono text-sm no-underline"
-    >
+  <article class="pt-20 pb-12">
+    <a href="/writing" class="min-h-touch text-muted inline-flex items-center text-sm">
       {pages.writing.backLink}
     </a>
-    <header class="mt-6 mb-10">
-      <p class="section-label">
-        <time datetime={isoDate(date)}>{formatDate(date)}</time>
-        {draft && <span> · Draft</span>}
-      </p>
-      <h1 class="mt-3 text-3xl sm:text-4xl">{title}</h1>
-      <p class="text-muted mt-3 text-lg">{summary}</p>
-      <TagList tags={tags} label="Topics" />
-    </header>
-    <div class="prose-site">
+    <p class="text-meta text-muted mt-4 flex flex-wrap gap-3 font-mono">
+      <time datetime={isoDate(date)}>{formatDate(date)}</time>
+      {topic && <span>{topic}</span>}
+      <span>{pages.writing.readingTime(readingMinutes(post))}</span>
+      {draft && <span>Draft</span>}
+    </p>
+    <h1 class="text-h1-post mt-3">{title}</h1>
+    <div class="prose-site mt-9">
       <slot />
     </div>
   </article>

@@ -3,7 +3,7 @@ import PostFilter, { type PostSummary } from '@/components/islands/PostFilter';
 import { pages } from '@/data/site';
 import Base from '@/layouts/Base.astro';
 import { formatDate, isoDate } from '@/lib/format';
-import { getPosts, getTags, postUrl } from '@/lib/posts';
+import { getPosts, getTags, postTopic, postUrl } from '@/lib/posts';
 
 const page = pages.writing;
 const posts = await getPosts();
@@ -14,15 +14,16 @@ const summaries: PostSummary[] = posts.map((post) => ({
   summary: post.data.summary,
   dateLabel: formatDate(post.data.date),
   dateIso: isoDate(post.data.date),
+  topic: postTopic(post),
   tags: post.data.tags,
   draft: post.data.draft,
 }));
 ---
 
 <Base title={page.title} description={page.description} image="/og/writing.png">
-  <header class="pt-16 pb-10">
-    <h1 class="text-4xl">{page.heading}</h1>
-    <p class="text-muted mt-3 text-lg">{page.intro}</p>
+  <header class="pt-24">
+    <h1 class="text-h1">{page.heading}</h1>
+    <p class="page-intro">{page.intro}</p>
   </header>
   <PostFilter
     client:load

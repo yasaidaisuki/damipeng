@@ -8,8 +8,7 @@ interface Props {
 const { metric } = Astro.props;
 ---
 
-<li class="card flex flex-col gap-2">
-  <p class="text-fg text-3xl font-semibold tracking-tight tabular-nums">{metric.value}</p>
-  <p class="section-label">{metric.label}</p>
-  <p class="text-muted text-sm leading-relaxed">{metric.detail}</p>
+<li class="rounded-card border-hairline border p-5">
+  <p class="text-metric text-accent font-semibold tabular-nums">{metric.value}</p>
+  <p class="text-secondary mt-2 text-sm leading-normal">{metric.detail}</p>
 </li>

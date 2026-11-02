@@ -6,23 +6,20 @@ const path = cleanPath(Astro.url.pathname);
 const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
 ---
 
-<header class="border-hairline border-b">
-  <nav
-    aria-label="Primary"
-    class="max-w-content mx-auto flex flex-wrap items-center justify-between gap-x-6 gap-y-1 px-5 py-2"
-  >
-    <a href="/" class="min-h-touch text-fg inline-flex items-center font-semibold no-underline">
-      {site.name}
-    </a>
-    <ul class="flex flex-wrap items-center gap-x-1">
+<header class="flex flex-wrap items-center justify-between gap-4 pt-10">
+  <a href="/" class="text-ui min-h-touch inline-flex items-center font-mono font-medium">
+    {site.handle}
+  </a>
+  <nav aria-label="Primary">
+    <ul class="flex flex-wrap gap-1">
       {nav.map((item) => (
         <li>
           <a
             href={item.href}
             aria-current={isActive(item.href) ? 'page' : undefined}
             class:list={[
-              'min-h-touch rounded-chip inline-flex items-center px-3 text-sm no-underline transition-colors',
-              isActive(item.href) ? 'text-fg font-medium' : 'text-muted hover:text-fg',
+              'text-ui min-h-touch inline-flex items-center px-3',
+              isActive(item.href) ? 'text-fg font-medium' : 'text-muted',
             ]}
           >
             {item.label}

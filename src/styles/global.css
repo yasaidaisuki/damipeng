@@ -2,50 +2,92 @@
 @plugin '@tailwindcss/typography';
 
 /*
- * Design tokens. Components use the generated utilities (bg-bg, text-muted, border-hairline,
- * max-w-content, rounded-card, font-mono, …), never raw hex values. Dark mode redefines the same
- * variables below, so no `dark:` variants are needed. Contrast is checked by scripts/contrast.mjs.
+ * Design tokens, ported from the design handoff mockups. Components use the generated utilities
+ * (bg-bg, text-secondary, border-hairline, text-h1, max-w-content, …), never raw hex values.
+ * Dark mode redefines the same variables below, so no `dark:` variants are needed.
+ * Contrast is checked by scripts/contrast.mjs; update it when colors change.
  */
 @theme {
-  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+  --font-plex-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
   --color-bg: #ffffff;
-  --color-surface: #f7f7f9;
   --color-fg: #111113;
   --color-body: #26262c;
+  --color-secondary: #3a3a42;
   --color-muted: #5b5b66;
   --color-hairline: #e6e6ea;
+  --color-hairline-soft: #efeff2;
+  --color-border-strong: #dadae0;
+  --color-surface: #f6f6f8;
+  --color-chip: #f3f3f5;
   --color-accent: #2347c6;
   --color-on-accent: #ffffff;
+  --color-inverse: #111113;
+  --color-on-inverse: #ffffff;
   --color-tile: #111113;
 
-  --radius-chip: 8px;
+  --radius-chip: 6px;
+  --radius-btn: 8px;
   --radius-card: 10px;
 
   --container-content: 760px;
   --container-post: 680px;
 
   --spacing-touch: 44px;
-  --spacing-section: 4.5rem;
+  --spacing-date-col: 168px;
 
-  --text-label: 0.75rem;
-  --text-label--letter-spacing: 0.08em;
-  --text-label--line-height: 1rem;
+  /* Type scale from the mockups. */
+  --text-display: 3.25rem;
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.03em;
+  --text-h1: 2.5rem;
+  --text-h1--line-height: 1.1;
+  --text-h1--letter-spacing: -0.025em;
+  --text-h1-post: 2.375rem;
+  --text-h1-post--line-height: 1.15;
+  --text-h1-post--letter-spacing: -0.025em;
+  --text-wordmark: 2.125rem;
+  --text-wordmark--line-height: 1;
+  --text-wordmark--letter-spacing: 0.01em;
+  --text-metric: 2rem;
+  --text-metric--line-height: 1.2;
+  --text-metric--letter-spacing: -0.02em;
+  --text-h2: 1.375rem;
+  --text-h2--line-height: 1.3;
+  --text-h2--letter-spacing: -0.01em;
+  --text-pitch: 1.375rem;
+  --text-pitch--line-height: 1.45;
+  --text-card-title: 1.1875rem;
+  --text-lead: 1.125rem;
+  --text-lead--line-height: 1.55;
+  --text-prose: 1.125rem;
+  --text-prose--line-height: 1.7;
+  --text-body-lg: 1.0625rem;
+  --text-body-lg--line-height: 1.65;
+  --text-ui: 0.9375rem;
+  --text-meta: 0.8125rem;
 }
 
 @layer base {
   @media (prefers-color-scheme: dark) {
     :root {
       --color-bg: #0d0d10;
-      --color-surface: #151519;
       --color-fg: #ededf0;
       --color-body: #c8c8d0;
+      --color-secondary: #b4b4be;
       --color-muted: #9c9ca8;
       --color-hairline: #2a2a31;
+      --color-hairline-soft: #1f1f25;
+      --color-border-strong: #3a3a42;
+      --color-surface: #151519;
+      --color-chip: #1c1c22;
       --color-accent: #7d97f2;
       --color-on-accent: #0d0d10;
+      --color-inverse: #ededf0;
+      --color-on-inverse: #0d0d10;
       --color-tile: #1c1c22;
     }
   }
@@ -55,7 +97,7 @@
   }
 
   html {
-    @apply bg-bg font-sans text-body antialiased;
+    @apply bg-bg font-sans text-fg antialiased;
     text-rendering: optimizeLegibility;
   }
 
@@ -67,11 +109,11 @@
   h2,
   h3,
   h4 {
-    @apply font-semibold tracking-tight text-balance text-fg;
+    @apply font-semibold text-balance;
   }
 
   a {
-    @apply underline-offset-4;
+    @apply no-underline transition-colors hover:text-accent;
   }
 
   :focus-visible {
@@ -90,37 +132,49 @@
 }
 
 @layer components {
+  /* Small uppercase mono section labels ("About", "Selected impact"). */
   .section-label {
-    @apply font-mono text-label font-medium text-muted uppercase;
+    @apply font-mono text-meta font-medium tracking-[0.06em] text-muted uppercase;
   }
 
+  /* Hairline-topped section with the mockups' 48px rhythm. */
   .section {
-    @apply border-t border-hairline py-section first:border-t-0;
+    @apply border-t border-hairline py-12;
+  }
+
+  /* Intro block on inner pages (/work, /writing, /contact). */
+  .page-header {
+    @apply pt-24 pb-12;
+  }
+
+  .page-intro {
+    @apply mt-4 max-w-[580px] text-lead text-secondary;
   }
 
   .btn {
-    @apply inline-flex min-h-touch items-center justify-center gap-2 rounded-chip border px-4 text-sm font-medium no-underline transition-colors;
+    @apply inline-flex min-h-touch items-center rounded-btn px-5 text-ui font-medium;
   }
 
   .btn-primary {
-    @apply border-accent bg-accent text-on-accent hover:opacity-90;
+    @apply bg-inverse text-on-inverse hover:text-on-inverse hover:opacity-90;
   }
 
   .btn-secondary {
-    @apply border-hairline bg-bg text-fg hover:border-muted;
+    @apply border border-border-strong text-fg;
   }
 
-  .chip {
-    @apply inline-flex items-center rounded-chip border border-hairline px-2 py-0.5 font-mono text-xs text-muted;
+  /* Accent text link ("Full work history →"). */
+  .link-accent {
+    @apply inline-flex min-h-touch items-center text-ui text-accent hover:text-accent hover:opacity-80;
   }
 
-  .card {
-    @apply rounded-card border border-hairline bg-surface p-5;
+  .tag {
+    @apply inline-flex rounded-chip bg-chip px-2.5 py-1 font-mono text-xs text-secondary;
   }
 
-  /* Tailwind Typography mapped onto the site tokens, for MDX posts. */
+  /* Post body. Tailwind Typography mapped onto the site tokens. */
   .prose-site {
-    @apply prose max-w-none;
+    @apply prose max-w-none text-prose;
     --tw-prose-body: var(--color-body);
     --tw-prose-headings: var(--color-fg);
     --tw-prose-lead: var(--color-body);
@@ -139,8 +193,12 @@
     --tw-prose-td-borders: var(--color-hairline);
   }
 
+  .prose-site :where(p) {
+    @apply my-5;
+  }
+
   .prose-site :where(pre) {
-    @apply rounded-card border border-hairline font-mono text-sm;
+    @apply rounded-card border border-hairline p-5 font-mono text-sm leading-[1.6];
   }
 
   .prose-site :where(code):not(:where(pre code)) {

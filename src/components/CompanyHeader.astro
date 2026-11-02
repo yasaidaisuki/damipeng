@@ -4,39 +4,47 @@ import { resolveLogo } from '@/lib/logos';
 
 interface Props {
   entry: WorkEntry;
+  /** Badge text shown next to the name for incoming roles. */
+  badge?: string | undefined;
 }
 
-const { entry } = Astro.props;
+const { entry, badge } = Astro.props;
 const { company, brand } = entry;
 const logo = brand.wordmark ? undefined : resolveLogo(entry.logo);
 ---
 
-<div class="flex flex-col gap-3">
-  <div class="flex h-1 w-10 overflow-hidden rounded-full" aria-hidden="true">
-    {brand.bar.map((color) => (
-      <span class="h-full flex-1" style={{ backgroundColor: color }} />
-    ))}
-  </div>
-  <h2 class="text-fg">
-    {logo ? (
-      <span
-        class:list={['inline-flex', brand.logoTile === 'dark' && 'bg-tile rounded-chip px-3 py-2']}
-      >
-        <img
-          src={logo}
-          alt={company}
-          height="40"
-          class:list={['w-auto', brand.logoTile === 'dark' ? 'h-6' : 'h-10']}
-          loading="lazy"
-          decoding="async"
-        />
-      </span>
-    ) : brand.wordmark === 'waterloo' ? (
-      <span class="font-display text-[1.75rem] leading-none font-bold tracking-wide uppercase">
-        {company}
-      </span>
-    ) : (
-      <span class="text-2xl">{company}</span>
-    )}
-  </h2>
+<div
+  class:list={['mb-4 flex h-1 w-10 overflow-hidden', !brand.squareBar && 'rounded-[2px]']}
+  aria-hidden="true"
+>
+  {brand.bar.map((color) => (
+    <span class="h-full flex-1" style={{ backgroundColor: color }} />
+  ))}
+</div>
+<div class="flex flex-wrap items-center gap-3">
+  {logo ? (
+    <h2
+      class:list={[
+        'inline-flex items-center',
+        brand.logoTile === 'dark' && 'bg-tile rounded-btn h-12 px-3',
+      ]}
+    >
+      <img
+        src={logo}
+        alt={company}
+        height="40"
+        class:list={['w-auto', brand.logoTile === 'dark' ? 'h-7' : 'h-10']}
+        decoding="async"
+      />
+    </h2>
+  ) : brand.wordmark === 'waterloo' ? (
+    <h2 class="font-display text-wordmark font-bold uppercase">{company}</h2>
+  ) : (
+    <h2 class="flex h-10 items-center text-2xl">{company}</h2>
+  )}
+  {badge && (
+    <span class="border-accent text-accent rounded-full border px-2 py-[3px] font-mono text-xs">
+      {badge}
+    </span>
+  )}
 </div>

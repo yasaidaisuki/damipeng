@@ -22,3 +22,14 @@ export function getTags(posts: Post[]): string[] {
 export function postUrl(post: Post): string {
   return `/writing/${post.id}`;
 }
+
+/** The post's primary topic, shown in list and post metadata: its first tag. */
+export function postTopic(post: Post): string | undefined {
+  return post.data.tags[0];
+}
+
+/** Estimated reading time in minutes (≈230 words/min, code included), at least 1. */
+export function readingMinutes(post: Post): number {
+  const words = (post.body ?? '').split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 230));
+}
