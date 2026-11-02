@@ -27,14 +27,7 @@ const bulletList = 'text-body flex list-disc flex-col gap-2 pl-[18px] leading-[1
       entry={entry}
       badge={entry.status === 'incoming' ? pages.work.incoming : undefined}
     />
-    <p
-      class:list={[
-        'text-muted',
-        entry.brand?.roleFont === 'plex-mono' ? 'font-plex-mono mt-2 text-sm' : 'text-ui mt-2',
-      ]}
-    >
-      {entry.role}
-    </p>
+    <p class="font-plex-mono text-muted mt-2 text-sm">{entry.role}</p>
     {entry.terms.map((term) => (
       <section>
         <h3 class="section-label mt-7 mb-2.5 text-xs">{term.label}</h3>

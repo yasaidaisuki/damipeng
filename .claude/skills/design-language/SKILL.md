@@ -52,7 +52,7 @@ too). Brand colors appear only in logos, the OG image renderer, and the `brand-*
 
 Fonts: `font-sans` (Geist Variable), `font-mono` (Geist Mono Variable). Brand faces are used only
 for company names: `font-brand-ibm` (IBM Plex Sans), `font-brand-shopify` (Inter, the Polaris
-face; Shopify Sans isn't publicly licensed), and `font-plex-mono` for IBM's role line. Import brand
+face; Shopify Sans isn't publicly licensed), and `font-plex-mono` (IBM Plex Mono) for every role line on `/work`. Import brand
 fonts per page (e.g. `@fontsource/inter/latin-600.css`), never globally.
 
 | Utility           | Size / line-height   | Use                            |

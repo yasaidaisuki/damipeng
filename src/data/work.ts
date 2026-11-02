@@ -7,11 +7,6 @@ export interface WorkTerm {
   bullets: string[];
 }
 
-export interface WorkBrand {
-  /** Typeface for the role line (IBM uses IBM Plex Mono). */
-  roleFont?: 'plex-mono';
-}
-
 export interface WorkLogo {
   /** Path under public/ for light backgrounds, e.g. "/logos/ibm.svg". */
   src: string;
@@ -43,7 +38,6 @@ export interface WorkEntry {
   tags: string[];
   /** Falls back to a text wordmark if the file is missing. */
   logo?: WorkLogo;
-  brand?: WorkBrand;
 }
 
 export const work: WorkEntry[] = [
@@ -56,7 +50,7 @@ export const work: WorkEntry[] = [
     status: 'incoming',
     terms: [],
     bullets: [],
-    tags: [],
+    tags: ['Go', 'Rust', 'Terraform', 'Kubernetes'],
     logo: { src: '/logos/shopify.svg', darkSrc: '/logos/shopify-dark.svg', capHeight: 0.607 },
   },
   {
@@ -101,9 +95,13 @@ export const work: WorkEntry[] = [
       'BullMQ',
       'React',
       'LangGraph',
+      'OpenAI',
+      'ElevenLabs',
+      'Docker',
+      'GitOps',
+      'NGINX',
     ],
     logo: { src: '/logos/ibm.svg', capHeight: 1 },
-    brand: { roleFont: 'plex-mono' },
   },
   {
     id: 'uwaterloo',
@@ -116,7 +114,7 @@ export const work: WorkEntry[] = [
       'Built a PyTorch harness to benchmark gradient-descent optimizers on CIFAR-10 classifiers.',
       'Extended accelerated optimization algorithms for 10% faster convergence than baseline optimizers.',
     ],
-    tags: [],
+    tags: ['Python', 'PyTorch', 'Pandas', 'Gradient Descent', 'Mathematical Optimization'],
     // Official PNGs from the university's logo download, used unaltered (they include clear space).
     logo: {
       src: '/logos/uwaterloo.png',
@@ -137,7 +135,7 @@ export const work: WorkEntry[] = [
       'Moved Postgres event listeners to Supabase Realtime broadcasts, cutting job-update latency 66%.',
       'Integrated the Stripe API to automate billing across 60+ monthly transactions.',
     ],
-    tags: [],
+    tags: ['Supabase', 'TypeScript', 'AWS S3', 'Stripe API', 'Postgres', 'React'],
     logo: {
       src: '/logos/civiconnect.svg',
       darkSrc: '/logos/civiconnect-dark.svg',
