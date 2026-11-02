@@ -23,7 +23,7 @@ src/
   components/          Static .astro components, zero client JS
   components/islands/  React .tsx components that hydrate (PostFilter, Comments)
   pages/               Routes; og/[...slug].png.ts renders OG images at build time with satori
-  styles/global.css    Tailwind entry: @theme tokens, dark-mode overrides, base + component classes
+  styles/global.css    Tailwind entry: @theme tokens, base + component classes
 public/                favicon, robots.txt, _headers (Cloudflare), logos/, resume.pdf
 scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens change
 ```
@@ -43,8 +43,8 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
   `text-metric`. Also `rounded-chip|btn|card`, `max-w-content|post`, `min-h-touch`, `font-mono`,
   `font-plex-mono`. No raw hex or arbitrary color values in markup. The exception is the OG
   renderer, which can't read CSS variables.
-- **Dark mode** comes from `prefers-color-scheme`, which redefines the token variables in
-  `global.css`. Don't add `dark:` variants.
+- **Light mode only.** There is deliberately no dark mode: don't add `prefers-color-scheme` rules,
+  `dark:` variants or dark logo variants.
 - Shared patterns are `@layer components` classes: `.section`, `.section-label`, `.btn` +
   `.btn-primary`/`.btn-secondary`, `.link-accent`, `.tag`, `.page-header`, `.page-intro`,
   `.prose-site`. Everything else uses inline utilities.
@@ -56,8 +56,7 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
 - Drafts: `draft: true` posts render in dev only; `getPosts()` handles the filtering. A post's first
   tag is its topic (shown in list and post meta), so use human-readable tags ("Distributed systems").
 - Logos live in `public/logos/` (SVG, or the official PNG where that's what the brand supplies).
-  In `work.ts`, `logo: { src, darkSrc?, capHeight, padding? }`. `darkSrc` swaps in under
-  `prefers-color-scheme: dark` via `<picture>`. `lib/logos.ts` scales every logo so its capital
+  In `work.ts`, `logo: { src, capHeight, padding? }`. `lib/logos.ts` scales every logo so its capital
   letters are 24px tall (`capHeight` is the measured fraction of the file's height), and
   `padding` collapses built-in clear space with negative margins instead of editing the file.
   Missing files fall back to a text name.

@@ -1,6 +1,6 @@
 ---
 name: design-language
-description: Design language for the dami.peng portfolio site (Astro + Tailwind v4). Use when adding or changing any UI in this repo, including pages, components, React islands, the Phase 2 comments widget, colors, type, spacing, logos, or dark mode, so new work matches the existing system and keeps AA contrast and Lighthouse 95+.
+description: Design language for the dami.peng portfolio site (Astro + Tailwind v4). Use when adding or changing any UI in this repo, including pages, components, React islands, the Phase 2 comments widget, colors, type, spacing or logos, so new work matches the existing system and keeps AA contrast and Lighthouse 95+.
 ---
 
 # dami.peng design language
@@ -26,27 +26,28 @@ source of truth. The tokens in `src/styles/global.css` encode them. **If this fi
 
 ### Color
 
-| Token                    | Light              | Dark                  | Use                                                              |
-| ------------------------ | ------------------ | --------------------- | ---------------------------------------------------------------- |
-| `bg`                     | `#ffffff`          | `#10141c`             | Page background (dark is a deep, low-saturation navy, not black) |
-| `fg`                     | `#111113`          | `#edeff3`             | Headings, primary text, link default                             |
-| `body`                   | `#26262c`          | `#cbcfd8`             | Long-form paragraphs, bullets                                    |
-| `secondary`              | `#3a3a42`          | `#b3b8c3`             | Intros, summaries, card body                                     |
-| `muted`                  | `#5b5b66`          | `#979daa`             | Labels, dates, meta, inactive nav                                |
-| `hairline`               | `#e6e6ea`          | `#262c38`             | Section rules, card borders                                      |
-| `hairline-soft`          | `#efeff2`          | `#1c212b`             | Dividers between list rows                                       |
-| `border-strong`          | `#dadae0`          | `#323946`             | Secondary buttons, idle chips, card hover                        |
-| `surface`                | `#f6f6f8`          | `#161b25`             | Code blocks                                                      |
-| `chip`                   | `#f3f3f5`          | `#1a202b`             | Tech tag background                                              |
-| `accent`                 | `#2347c6`          | `#8ca4f5`             | Links, metrics, status dot, focus ring                           |
-| `on-accent`              | `#ffffff`          | `#10141c`             | Text on accent                                                   |
-| `inverse` / `on-inverse` | `#111113` / `#fff` | `#edeff3` / `#10141c` | Primary button, active filter pill                               |
-| `brand-ibm`              | `#0f62fe`          | `#78a9ff`             | Hover on IBM's name (IBM Blue 60; Carbon Blue 40 in dark)        |
-| `brand-shopify`          | `#008060`          | `#95bf47`             | Hover on Shopify's name (brand green; logo green in dark)        |
+| Token                    | Value                 | Use                                       |
+| ------------------------ | --------------------- | ----------------------------------------- |
+| `bg`                     | `#ffffff`             | Page background                           |
+| `fg`                     | `#111113`             | Headings, primary text, link default      |
+| `body`                   | `#26262c`             | Long-form paragraphs, bullets             |
+| `secondary`              | `#3a3a42`             | Intros, summaries, card body              |
+| `muted`                  | `#5b5b66`             | Labels, dates, meta, inactive nav         |
+| `hairline`               | `#e6e6ea`             | Section rules, card borders               |
+| `hairline-soft`          | `#efeff2`             | Dividers between list rows                |
+| `border-strong`          | `#dadae0`             | Secondary buttons, idle chips, card hover |
+| `surface`                | `#f6f6f8`             | Code blocks                               |
+| `chip`                   | `#f3f3f5`             | Tech tag background                       |
+| `accent`                 | `#2347c6`             | Links, metrics, status dot, focus ring    |
+| `on-accent`              | `#ffffff`             | Text on accent                            |
+| `inverse` / `on-inverse` | `#111113` / `#ffffff` | Primary button, active filter pill        |
+| `brand-ibm`              | `#0f62fe`             | Hover on IBM's name (IBM Blue 60)         |
+| `brand-shopify`          | `#008060`             | Hover on Shopify's name (Shopify green)   |
 
-Dark mode is `prefers-color-scheme` only. `global.css` redefines these variables, so **never write
-`dark:` variants**. Every color change must pass `node scripts/contrast.mjs` (update its table
-too). Brand colors appear only in logos, the OG image renderer, and the `brand-*` hover tokens.
+**Light mode only.** The site deliberately has no dark mode: never add `prefers-color-scheme`
+rules, `dark:` variants or dark logo variants. Every color change must pass
+`node scripts/contrast.mjs` (update its table too). Brand colors appear only in logos, the OG image
+renderer, and the `brand-*` hover tokens.
 
 ### Type
 
@@ -95,8 +96,8 @@ after:inset-0` title link, with secondary links at `relative z-10`.
 - **Filter pills:** 36px visual height with an `::after` hit area padding to 44px. Active is
   `bg-inverse text-on-inverse`, idle is `border-border-strong`.
 - **Meta rows:** `text-meta text-muted font-mono flex flex-wrap gap-3` (date · topic · extra).
-- **Logos** (`/work` only): files in `public/logos/`, data in `work.ts` as `{ src, darkSrc?,
-capHeight, padding? }`. Logos are scaled so their capital letters are 24px tall, not by box
+- **Logos** (`/work` only): files in `public/logos/`, data in `work.ts` as `{ src, capHeight,
+padding? }`. Logos are scaled so their capital letters are 24px tall, not by box
   height. Measure `capHeight` from the artwork. Official files the brand says not to alter
   (UWaterloo PNGs) stay untouched, and `padding` collapses their clear space with negative margins.
   The home page names companies in text with their brand font, without logos. Those names link to
@@ -113,7 +114,7 @@ capHeight, padding? }`. Logos are scaled so their capital letters are 24px tall,
 
 ## Checklist for any UI change
 
-1. Only semantic token utilities are used: no hex, no arbitrary colors, no `dark:`.
-2. Check the light and dark screenshots against the mockups at 1280px and 360px.
+1. Only semantic token utilities are used: no hex, no arbitrary colors, no dark-mode rules.
+2. Check screenshots against the mockups at 1280px and 360px.
 3. `npm run format && npm run lint && npm run check && npm run build`
 4. `node scripts/contrast.mjs` if colors changed. Lighthouse stays ≥95 (it's ~100 today).

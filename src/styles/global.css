@@ -4,7 +4,7 @@
 /*
  * Design tokens, ported from the design handoff mockups. Components use the generated utilities
  * (bg-bg, text-secondary, border-hairline, text-h1, max-w-content, …), never raw hex values.
- * Dark mode redefines the same variables below, so no `dark:` variants are needed.
+ * The site is light-only; there is no dark mode.
  * Contrast is checked by scripts/contrast.mjs; update it when colors change.
  */
 @theme {
@@ -73,31 +73,8 @@
 }
 
 @layer base {
-  /* Dark: a deep, low-saturation navy rather than pure black. */
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --color-bg: #10141c;
-      --color-fg: #edeff3;
-      --color-body: #cbcfd8;
-      --color-secondary: #b3b8c3;
-      --color-muted: #979daa;
-      --color-hairline: #262c38;
-      --color-hairline-soft: #1c212b;
-      --color-border-strong: #323946;
-      --color-surface: #161b25;
-      --color-chip: #1a202b;
-      --color-accent: #8ca4f5;
-      --color-on-accent: #10141c;
-      --color-inverse: #edeff3;
-      --color-on-inverse: #10141c;
-      /* IBM Blue 40 (Carbon's dark-theme blue) and Shopify's logo green read better on navy. */
-      --color-brand-ibm: #78a9ff;
-      --color-brand-shopify: #95bf47;
-    }
-  }
-
   :root {
-    color-scheme: light dark;
+    color-scheme: light;
   }
 
   html {
@@ -215,17 +192,7 @@
   }
 }
 
-/* Shiki dual themes (markdown.shikiConfig.defaultColor = false). Backgrounds come from the tokens. */
+/* Shiki code blocks: token colors come inline from the theme; the background comes from the tokens. */
 .astro-code {
   background-color: var(--color-surface) !important;
-}
-
-.astro-code span {
-  color: var(--shiki-light);
-}
-
-@media (prefers-color-scheme: dark) {
-  .astro-code span {
-    color: var(--shiki-dark);
-  }
 }

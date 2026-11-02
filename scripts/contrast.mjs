@@ -28,21 +28,6 @@ const themes = {
     brandIbm: '#0F62FE',
     brandShopify: '#008060',
   },
-  dark: {
-    bg: '#10141C',
-    surface: '#161B25',
-    chip: '#1A202B',
-    fg: '#EDEFF3',
-    body: '#CBCFD8',
-    secondary: '#B3B8C3',
-    muted: '#979DAA',
-    accent: '#8CA4F5',
-    onAccent: '#10141C',
-    inverse: '#EDEFF3',
-    onInverse: '#10141C',
-    brandIbm: '#78A9FF',
-    brandShopify: '#95BF47',
-  },
 };
 
 let failed = false;

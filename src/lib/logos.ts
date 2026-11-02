@@ -10,7 +10,6 @@ const CAP_HEIGHT = 24;
 
 export interface ResolvedLogo {
   src: string;
-  darkSrc?: string | undefined;
   width: number;
   height: number;
   /** Negative margins that collapse built-in padding (see WorkLogo.padding). */
@@ -43,7 +42,6 @@ const px = (n: number) => `${-Math.round(n)}px`;
  */
 export function resolveLogo(logo: WorkLogo | undefined): ResolvedLogo | undefined {
   if (!logo || !existsSync(publicPath(logo.src))) return undefined;
-  const darkSrc = logo.darkSrc && existsSync(publicPath(logo.darkSrc)) ? logo.darkSrc : undefined;
   const height = Math.round(CAP_HEIGHT / logo.capHeight);
   const width = Math.round(height * aspectRatio(publicPath(logo.src)));
   const pad = logo.padding;
@@ -53,5 +51,5 @@ export function resolveLogo(logo: WorkLogo | undefined): ResolvedLogo | undefine
     marginBottom: px(pad.bottom * height),
     marginLeft: px(pad.left * width),
   };
-  return { src: logo.src, darkSrc, width, height, style };
+  return { src: logo.src, width, height, style };
 }

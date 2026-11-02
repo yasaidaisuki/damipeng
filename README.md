@@ -43,8 +43,8 @@ CI (`.github/workflows/ci.yml`) runs format check, lint, `astro check` and build
 
   Drafts show in `npm run dev` but are left out of builds, RSS and the sitemap.
 
-- **Logos**: SVGs in `public/logos/`, referenced from `work.ts` as `{ src, darkSrc? }`. `darkSrc` is
-  used in dark mode. If a file is missing, the work page falls back to a text wordmark.
+- **Logos**: files in `public/logos/`, referenced from `work.ts` as `{ src, capHeight, padding? }`.
+  If a file is missing, the work page falls back to a text name.
 - **Résumé**: put the PDF at `public/resume.pdf`.
 
 ## Deploying (Cloudflare Pages)

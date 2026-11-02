@@ -8,10 +8,8 @@ export interface WorkTerm {
 }
 
 export interface WorkLogo {
-  /** Path under public/ for light backgrounds, e.g. "/logos/ibm.svg". */
+  /** Path under public/, e.g. "/logos/ibm.svg". */
   src: string;
-  /** Optional variant swapped in under prefers-color-scheme: dark. */
-  darkSrc?: string;
   /**
    * Height of the logo's capital (or ascender) letters as a fraction of the file's height. Used to
    * scale every logo to the same lettering size. Measured from the artwork.
@@ -51,7 +49,7 @@ export const work: WorkEntry[] = [
     terms: [],
     bullets: [],
     tags: ['Go', 'Rust', 'Terraform', 'Kubernetes'],
-    logo: { src: '/logos/shopify.svg', darkSrc: '/logos/shopify-dark.svg', capHeight: 0.607 },
+    logo: { src: '/logos/shopify.svg', capHeight: 0.607 },
   },
   {
     id: 'ibm',
@@ -119,7 +117,6 @@ export const work: WorkEntry[] = [
     // Official PNGs from the university's logo download, used unaltered (they include clear space).
     logo: {
       src: '/logos/uwaterloo.png',
-      darkSrc: '/logos/uwaterloo-dark.png',
       capHeight: 0.169,
       padding: { top: 0.278, right: 0.138, bottom: 0.287, left: 0.136 },
     },
@@ -139,7 +136,6 @@ export const work: WorkEntry[] = [
     tags: ['Supabase', 'TypeScript', 'AWS S3', 'Stripe API', 'Postgres', 'React'],
     logo: {
       src: '/logos/civiconnect.svg',
-      darkSrc: '/logos/civiconnect-dark.svg',
       capHeight: 0.831,
     },
   },

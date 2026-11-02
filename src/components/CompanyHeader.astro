@@ -16,18 +16,15 @@ const logo = resolveLogo(entry.logo);
 <div class="flex flex-wrap items-center gap-3">
   {logo ? (
     <h2 class="flex items-center">
-      <picture>
-        {logo.darkSrc && <source srcset={logo.darkSrc} media="(prefers-color-scheme: dark)" />}
-        <img
-          src={logo.src}
-          alt={company}
-          width={logo.width}
-          height={logo.height}
-          class="max-w-none"
-          style={logo.style}
-          decoding="async"
-        />
-      </picture>
+      <img
+        src={logo.src}
+        alt={company}
+        width={logo.width}
+        height={logo.height}
+        class="max-w-none"
+        style={logo.style}
+        decoding="async"
+      />
     </h2>
   ) : (
     <h2 class="flex h-10 items-center text-2xl">{company}</h2>

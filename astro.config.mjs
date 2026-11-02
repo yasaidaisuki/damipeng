@@ -15,8 +15,7 @@ export default defineConfig({
   integrations: [mdx(), react(), sitemap({ filter: (page) => !page.includes('/og/') })],
   markdown: {
     shikiConfig: {
-      themes: { light: 'github-light-high-contrast', dark: 'github-dark-high-contrast' },
-      defaultColor: false,
+      theme: 'github-light-high-contrast',
       wrap: false,
     },
   },
