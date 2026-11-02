@@ -2,16 +2,19 @@
 import { links, pages, site } from '@/data/site';
 ---
 
-<footer class="border-hairline text-meta text-muted flex flex-wrap items-center justify-between gap-3 border-t pt-8 pb-14 font-mono">
+<footer class="border-hairline text-meta text-muted flex flex-wrap items-center justify-between gap-x-3 border-t pt-5 pb-11 font-mono">
   <p>{site.meta}</p>
-  <ul class="flex flex-wrap gap-x-5">
+  <ul class="-mx-2 flex flex-wrap">
     <li>
-      <a href="/rss.xml" class="text-muted">
+      <a
+        href="/rss.xml"
+        class="text-muted min-h-touch min-w-touch inline-flex items-center justify-center px-2"
+      >
         {pages.footer.rss}
       </a>
     </li>
     <li>
-      <a href={links.email.href} class="text-muted">
+      <a href={links.email.href} class="text-muted min-h-touch inline-flex items-center px-2">
         {site.email}
       </a>
     </li>

@@ -6,19 +6,20 @@ const path = cleanPath(Astro.url.pathname);
 const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
 ---
 
-<header class="flex flex-wrap items-center justify-between gap-4 pt-10">
+<header class="flex flex-wrap items-center justify-between gap-x-4 pt-10">
   <a href="/" class="text-ui min-h-touch inline-flex items-center font-mono font-medium">
     {site.handle}
   </a>
   <nav aria-label="Primary">
-    <ul class="flex flex-wrap gap-1">
+    <ul class="-mx-2 flex flex-wrap sm:mx-0 sm:gap-1">
       {nav.map((item) => (
         <li>
           <a
             href={item.href}
             aria-current={isActive(item.href) ? 'page' : undefined}
             class:list={[
-              'text-ui min-h-touch inline-flex items-center px-3',
+              // Tighter padding below `sm` keeps the nav on one row down to 320px.
+              'text-ui min-h-touch inline-flex items-center px-2 sm:px-3',
               isActive(item.href) ? 'text-fg font-medium' : 'text-muted',
             ]}
           >

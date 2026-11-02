@@ -16,8 +16,8 @@ export interface WorkLogo {
    */
   capHeight: number;
   /**
-   * Transparent padding baked into the file, as fractions of its size. Collapsed with negative
-   * margins so the file stays unmodified (used for logos supplied with required clear space).
+   * Transparent padding baked into the file, as fractions of its size. Clipped by a wrapper in
+   * layout so the file stays unmodified (used for logos supplied with required clear space).
    */
   padding?: { top: number; right: number; bottom: number; left: number };
 }

@@ -58,7 +58,8 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
 - Logos live in `public/logos/` (SVG, or the official PNG where that's what the brand supplies).
   In `work.ts`, `logo: { src, capHeight, padding? }`. `lib/logos.ts` scales every logo so its capital
   letters are 24px tall (`capHeight` is the measured fraction of the file's height), and
-  `padding` collapses built-in clear space with negative margins instead of editing the file.
+  `padding` hides built-in clear space by clipping it inside a wrapper (percentage margins, so the
+  logo also shrinks to fit narrow phones) instead of editing the file.
   Missing files fall back to a text name.
 
 ## Phase 2 hooks

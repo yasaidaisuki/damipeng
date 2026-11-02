@@ -51,7 +51,8 @@ const secondaryCtas = [links.github, links.linkedin, { ...links.resume, label: h
             target="_blank"
             rel="noopener noreferrer"
             class:list={[
-              'text-fg font-semibold duration-300',
+              // ::before pads the inline link's hit area to 44px tall without affecting layout.
+              "text-fg relative font-semibold duration-300 before:absolute before:inset-x-0 before:-inset-y-3 before:content-['']",
               item.orgBrand === 'ibm' && 'font-brand-ibm hover:text-brand-ibm',
               item.orgBrand === 'shopify' && 'font-brand-shopify hover:text-brand-shopify',
             ]}

@@ -99,14 +99,21 @@ after:inset-0` title link, with secondary links at `relative z-10`.
 - **Logos** (`/work` only): files in `public/logos/`, data in `work.ts` as `{ src, capHeight,
 padding? }`. Logos are scaled so their capital letters are 24px tall, not by box
   height. Measure `capHeight` from the artwork. Official files the brand says not to alter
-  (UWaterloo PNGs) stay untouched, and `padding` collapses their clear space with negative margins.
+  (UWaterloo PNGs) stay untouched, and `padding` clips their clear space inside a wrapper.
+  `lib/logos.ts` sizes the image in percentages of that wrapper, which is capped at `max-w-full`,
+  so logos shrink on narrow phones instead of overflowing the page.
   The home page names companies in text with their brand font, without logos. Those names link to
   the company site and fade (`duration-300`) to their `brand-*` color on hover.
 
 ## Interaction and accessibility
 
 - Links are `fg` and turn `accent` on hover with no underline. Accent links stay accent and fade to 80% on hover.
-- Every target is ≥44px (`min-h-touch`); `:focus-visible` gives a 2px accent outline.
+- Every target is ≥44px (`min-h-touch`, plus `min-w-touch` for short labels like "RSS");
+  `:focus-visible` gives a 2px accent outline. Inline links inside sentences get a `::before`
+  hit area (`before:absolute before:-inset-y-3`) instead of padding, so line spacing doesn't change.
+- Mobile: nothing may overflow at 280px (Galaxy Fold folded). The nav stays on one row from 320px
+  (`px-2` links below `sm`) and wraps flush-left below that. Hover styles are cosmetic only
+  (Tailwind v4 gates `hover:` to `(hover: hover)`), so never put information behind hover.
 - Interactive UI is a React island in `src/components/islands/`, SSR-rendered and usable without
   JS where possible, and uses `client:visible` unless it sits above the fold.
 - One `h1` per page, labelled sections, `<time datetime>`, `aria-current="page"` in the nav, and
@@ -115,6 +122,6 @@ padding? }`. Logos are scaled so their capital letters are 24px tall, not by box
 ## Checklist for any UI change
 
 1. Only semantic token utilities are used: no hex, no arbitrary colors, no dark-mode rules.
-2. Check screenshots against the mockups at 1280px and 360px.
+2. Check screenshots against the mockups at 1280px, 360px and 280px; no horizontal overflow.
 3. `npm run format && npm run lint && npm run check && npm run build`
 4. `node scripts/contrast.mjs` if colors changed. Lighthouse stays ≥95 (it's ~100 today).

@@ -10,10 +10,17 @@ const CAP_HEIGHT = 24;
 
 export interface ResolvedLogo {
   src: string;
+  /** Intrinsic render size of the whole file (incl. any built-in padding), for width/height attrs. */
   width: number;
   height: number;
-  /** Negative margins that collapse built-in padding (see WorkLogo.padding). */
-  style?: Record<string, string> | undefined;
+  /** Width of the visible artwork in px; the wrapper is this wide but never wider than its column. */
+  boxWidth: number;
+  /**
+   * Image sizing as percentages of the wrapper's width, so the logo scales down on narrow screens.
+   * Percent margins (vertical ones included) resolve against the wrapper's width, which lets the
+   * negative margins collapse built-in padding at any size; the wrapper clips what's left.
+   */
+  imgStyle: Record<string, string>;
 }
 
 const publicPath = (src: string) => join(process.cwd(), 'public', src);
@@ -34,22 +41,24 @@ function aspectRatio(file: string): number {
   return w && h ? w / h : 1;
 }
 
-const px = (n: number) => `${-Math.round(n)}px`;
+const pct = (n: number) => `${+n.toFixed(3)}%`;
 
 /**
  * Resolves a logo at build time. Returns undefined if the file is missing under public/, so callers
- * can fall back to a text wordmark. Width/height are set to avoid layout shift.
+ * can fall back to a text wordmark.
  */
 export function resolveLogo(logo: WorkLogo | undefined): ResolvedLogo | undefined {
   if (!logo || !existsSync(publicPath(logo.src))) return undefined;
   const height = Math.round(CAP_HEIGHT / logo.capHeight);
   const width = Math.round(height * aspectRatio(publicPath(logo.src)));
-  const pad = logo.padding;
-  const style = pad && {
-    marginTop: px(pad.top * height),
-    marginRight: px(pad.right * width),
-    marginBottom: px(pad.bottom * height),
-    marginLeft: px(pad.left * width),
+  const pad = logo.padding ?? { top: 0, right: 0, bottom: 0, left: 0 };
+  const boxWidth = Math.round(width * (1 - pad.left - pad.right));
+  const ofBox = (px: number) => (px / boxWidth) * 100;
+  const imgStyle = {
+    width: pct(ofBox(width)),
+    marginLeft: pct(-ofBox(pad.left * width)),
+    marginTop: pct(-ofBox(pad.top * height)),
+    marginBottom: pct(-ofBox(pad.bottom * height)),
   };
-  return { src: logo.src, width, height, style };
+  return { src: logo.src, width, height, boxWidth, imgStyle };
 }
