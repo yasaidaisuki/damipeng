@@ -37,9 +37,9 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
 - **Design tokens only.** Use the semantic utilities from `@theme`. Colors: `bg`, `fg`, `body`,
   `secondary`, `muted`, `hairline`, `hairline-soft`, `border-strong`, `surface`, `chip`, `accent`,
   `inverse`/`on-inverse`. Type: `text-display`, `text-h1`, `text-h1-post`, `text-h2`, `text-pitch`,
-  `text-lead`, `text-prose`, `text-body-lg`, `text-ui` (15px), `text-meta` (13px), `text-wordmark`,
+  `text-lead`, `text-prose`, `text-body-lg`, `text-ui` (15px), `text-meta` (13px),
   `text-metric`. Also `rounded-chip|btn|card`, `max-w-content|post`, `min-h-touch`, `font-mono`,
-  `font-display`, `font-plex-mono`. No raw hex or arbitrary color values in markup. The exceptions are brand bar colors in `work.ts` and the OG
+  `font-plex-mono`. No raw hex or arbitrary color values in markup. The exception is the OG
   renderer, which can't read CSS variables.
 - **Dark mode** comes from `prefers-color-scheme`, which redefines the token variables in
   `global.css`. Don't add `dark:` variants.
@@ -53,10 +53,12 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
   `:focus-visible` rings, `<time datetime>`. ESLint runs jsx-a11y in strict mode.
 - Drafts: `draft: true` posts render in dev only; `getPosts()` handles the filtering. A post's first
   tag is its topic (shown in list and post meta), so use human-readable tags ("Distributed systems").
-- Logos: SVGs live in `public/logos/`. Set `logo: { src, darkSrc? }` in `work.ts`; `darkSrc` is swapped
-  in under `prefers-color-scheme: dark` via `<picture>`. `lib/logos.ts` reads each SVG's viewBox at build
-  time to set width/height (40px tall), and falls back to a text wordmark if the file is missing.
-  `brand.wordmark` renders styled text instead (Waterloo).
+- Logos live in `public/logos/` (SVG, or the official PNG where that's what the brand supplies).
+  In `work.ts`, `logo: { src, darkSrc?, capHeight, padding? }`. `darkSrc` swaps in under
+  `prefers-color-scheme: dark` via `<picture>`. `lib/logos.ts` scales every logo so its capital
+  letters are 24px tall (`capHeight` is the measured fraction of the file's height), and
+  `padding` collapses built-in clear space with negative margins instead of editing the file.
+  Missing files fall back to a text name.
 
 ## Phase 2 hooks
 

@@ -10,7 +10,6 @@
 @theme {
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
-  --font-display: 'Barlow Condensed', 'Arial Narrow', sans-serif;
   --font-plex-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
   --color-bg: #ffffff;
@@ -48,9 +47,6 @@
   --text-h1-post: 2.375rem;
   --text-h1-post--line-height: 1.15;
   --text-h1-post--letter-spacing: -0.025em;
-  --text-wordmark: 2.125rem;
-  --text-wordmark--line-height: 1;
-  --text-wordmark--letter-spacing: 0.01em;
   --text-metric: 2rem;
   --text-metric--line-height: 1.2;
   --text-metric--letter-spacing: -0.02em;

@@ -9,18 +9,10 @@ interface Props {
 }
 
 const { entry, badge } = Astro.props;
-const { company, brand } = entry;
-const logo = brand.wordmark ? undefined : resolveLogo(entry.logo);
+const { company } = entry;
+const logo = resolveLogo(entry.logo);
 ---
 
-<div
-  class:list={['mb-4 flex h-1 w-10 overflow-hidden', !brand.squareBar && 'rounded-[2px]']}
-  aria-hidden="true"
->
-  {brand.bar.map((color) => (
-    <span class="h-full flex-1" style={{ backgroundColor: color }} />
-  ))}
-</div>
 <div class="flex flex-wrap items-center gap-3">
   {logo ? (
     <h2 class="flex items-center">
@@ -31,13 +23,12 @@ const logo = brand.wordmark ? undefined : resolveLogo(entry.logo);
           alt={company}
           width={logo.width}
           height={logo.height}
-          class="h-10 w-auto"
+          class="max-w-none"
+          style={logo.style}
           decoding="async"
         />
       </picture>
     </h2>
-  ) : brand.wordmark === 'waterloo' ? (
-    <h2 class="font-display text-wordmark font-bold uppercase">{company}</h2>
   ) : (
     <h2 class="flex h-10 items-center text-2xl">{company}</h2>
   )}

@@ -30,7 +30,7 @@ const bulletList = 'text-body flex list-disc flex-col gap-2 pl-[18px] leading-[1
     <p
       class:list={[
         'text-muted',
-        entry.brand.roleFont === 'plex-mono' ? 'font-plex-mono mt-2 text-sm' : 'text-ui mt-1',
+        entry.brand?.roleFont === 'plex-mono' ? 'font-plex-mono mt-2 text-sm' : 'text-ui mt-2',
       ]}
     >
       {entry.role}
