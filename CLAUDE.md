@@ -75,11 +75,14 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
   its intro animation ends. Drag (mouse or touch) turns it up to ±5° and it eases back on release.
 - The poster `<img>` is the LCP element; the scene loads after `load` + idle and fades in over it.
   It stays on the poster for reduced motion, no WebGL, `deviceMemory < 4` or
-  `hardwareConcurrency <= 4`. Renders are on demand only, and pause off screen.
+  `hardwareConcurrency <= 4`. Renders are on demand only, capped at 30 fps, and pause off screen.
+- Shadow maps were most of the GPU cost, so they redraw only when the room has turned (not on
+  video frames), at 1024 (sun, its camera fitted to the room) and 512 (window light, with
+  `normalBias` scaled up to match; lower and the bed shows shadow acne).
 - The monitor plays `screen.mp4` (starting at 5s) only on `(hover: hover) and (pointer: fine)`;
   touch devices show `screen-still.webp` and never fetch the video.
 - **`public/room/poster*.webp` is a render of this scene** (still screen, no hint, 1080px and 540px).
-  Re-render it whenever the framing (`FRUSTUM`, camera), lighting or model changes, or the fade-in
+  Re-render it whenever the framing (`FRUSTUM`, camera), lighting, shadows or model changes, or the fade-in
   will visibly jump: screenshot the live canvas at 1280px wide, DPR 2, with the mp4 request blocked.
   `--color-room` is the rendered floor colour; re-sample it too.
 

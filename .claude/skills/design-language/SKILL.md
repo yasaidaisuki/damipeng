@@ -111,7 +111,7 @@ padding? }`. Logos are scaled so their capital letters are 24px tall, not by box
   the company site and fade (`duration-300`) to their `brand-*` color on hover.
 - **Room** (home hero only, `RoomHero.astro`): a square `rounded-frame border-hairline bg-room`
   frame holding a poster `<img>` with the three.js canvas faded in over it, a `bg-scrim
-text-on-inverse text-meta` mono hint pill bottom-left that fades after the first drag, and a mono
+text-on-inverse text-meta` mono hint pill bottom-left that hides while dragging and fades back in 1.5s after release, and a mono
   `text-meta text-muted` caption. The frame is `touch-pan-y`, so vertical swipes still scroll.
 
 ## Interaction and accessibility

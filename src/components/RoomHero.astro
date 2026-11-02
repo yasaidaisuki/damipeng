@@ -41,6 +41,8 @@ const { room } = home;
   const frame = document.querySelector<HTMLElement>('[data-room]');
   const canvas = frame?.querySelector('canvas');
   const hint = frame?.querySelector('[data-room-hint]');
+  /** How long after the last drag the hint fades back in. */
+  const HINT_DELAY = 1500;
 
   const hasWebGL = () => {
     try {
@@ -74,7 +76,19 @@ const { room } = home;
     canvas.classList.remove('opacity-0');
     frame.dataset.live = '';
     hint?.classList.remove('opacity-0');
-    frame.addEventListener('pointerdown', () => hint?.classList.add('opacity-0'), { once: true });
+    // The hint hides while the room is held and returns once it has been left alone for a moment
+    // (after the ~700ms ease back), so it's there whenever the room is idle.
+    let showHint: ReturnType<typeof setTimeout> | undefined;
+    frame.addEventListener('pointerdown', () => {
+      clearTimeout(showHint);
+      hint?.classList.add('opacity-0');
+    });
+    const released = () => {
+      clearTimeout(showHint);
+      showHint = setTimeout(() => hint?.classList.remove('opacity-0'), HINT_DELAY);
+    };
+    frame.addEventListener('pointerup', released);
+    frame.addEventListener('pointercancel', released);
   };
 
   if (frame && canvas && capable()) {

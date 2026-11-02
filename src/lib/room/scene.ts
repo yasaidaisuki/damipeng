@@ -16,6 +16,8 @@ const MAX_YAW = THREE.MathUtils.degToRad(5);
 const DRAG_FULL = 120;
 /** Fraction of the remaining rotation covered per 60fps frame, as in the old site's mouse lerp. */
 const EASE = 0.1;
+/** Renders are capped at this rate; the lerp uses real elapsed time, so motion speed is unchanged. */
+const MAX_FPS = 30;
 /** The monitor video starts on the frame the poster and the still show. */
 const VIDEO_START = 5;
 
@@ -37,6 +39,9 @@ export async function mountRoom(frame: HTMLElement, canvas: HTMLCanvasElement, o
   renderer.toneMapping = THREE.LinearToneMapping;
   renderer.toneMappingExposure = 0.95;
   renderer.shadowMap.enabled = true;
+  // Shadow maps are most of each frame's GPU work; redraw them only when the room has turned.
+  renderer.shadowMap.autoUpdate = false;
+  renderer.shadowMap.needsUpdate = true;
   renderer.debug.checkShaderErrors = import.meta.env.DEV;
   const coarse = matchMedia('(pointer: coarse)').matches;
   renderer.setPixelRatio(Math.min(devicePixelRatio, coarse ? 1.5 : 2));
@@ -47,7 +52,7 @@ export async function mountRoom(frame: HTMLElement, canvas: HTMLCanvasElement, o
   camera.position.set(0.25, 4, 5.5);
   camera.rotation.x = -Math.PI / 6;
 
-  addLights(scene);
+  const sun = addLights(scene);
   addFloor(scene);
 
   // DRACOLoader bundles its own decoder (hashed under /_astro/); preload fetches it alongside the model.
@@ -62,26 +67,38 @@ export async function mountRoom(frame: HTMLElement, canvas: HTMLCanvasElement, o
   const screen = new THREE.MeshBasicMaterial({ map: screenTexture(still) });
   setUpRoom(room, screen);
   scene.add(room);
+  fitShadowCamera(sun, room);
 
   // Render on demand: only while the room is easing, on resize, and on new video frames.
   let yaw = 0;
   let target = 0;
   let last = 0;
+  let rendered = 0;
   let raf = 0;
   let visible = true;
+  // Rendering before compileAsync finishes would stall on the unfinished shaders.
+  let ready = false;
   const tick = (now: number) => {
     raf = 0;
+    if (now - rendered < 1000 / MAX_FPS - 2) {
+      raf = requestAnimationFrame(tick);
+      return;
+    }
+    rendered = now;
     const delta = last ? Math.min(now - last, 100) : 1000 / 60;
     last = now;
     yaw += (target - yaw) * (1 - Math.pow(1 - EASE, delta / (1000 / 60)));
     if (Math.abs(target - yaw) < 1e-4) yaw = target;
-    room.rotation.y = yaw;
+    if (room.rotation.y !== yaw) {
+      room.rotation.y = yaw;
+      renderer.shadowMap.needsUpdate = true;
+    }
     renderer.render(scene, camera);
     if (yaw !== target) requestRender();
     else last = 0;
   };
   const requestRender = () => {
-    if (!raf && visible) raf = requestAnimationFrame(tick);
+    if (!raf && visible && ready) raf = requestAnimationFrame(tick);
   };
 
   const resize = () => {
@@ -139,13 +156,15 @@ export async function mountRoom(frame: HTMLElement, canvas: HTMLCanvasElement, o
   // Compile every shader before the first frame instead of stalling on it.
   await renderer.compileAsync(scene, camera);
   renderer.render(scene, camera);
+  ready = true;
 }
 
 function addLights(scene: THREE.Scene) {
   const sun = new THREE.DirectionalLight(NIGHT, NIGHT_INTENSITY);
   sun.castShadow = true;
   sun.shadow.camera.far = 20;
-  sun.shadow.mapSize.set(2048, 2048);
+  // 1024 is enough once fitShadowCamera narrows the map from the default ±5 units to the room.
+  sun.shadow.mapSize.set(1024, 1024);
   sun.shadow.normalBias = 0.01;
   sun.position.set(2, 6, 4);
   scene.add(sun, new THREE.AmbientLight(NIGHT, NIGHT_INTENSITY));
@@ -154,9 +173,26 @@ function addLights(scene: THREE.Scene) {
   windowLight.position.set(1.3, 1.3, -0.7);
   windowLight.target.position.set(0.5, 0, 0);
   windowLight.castShadow = true;
-  windowLight.shadow.mapSize.set(2048, 2048);
-  windowLight.shadow.normalBias = 0.001;
+  // A small, very soft cone (penumbra 0.9), so its shadows don't need much resolution. The bias
+  // grows with the texel size (0.001 at the old site's 2048); any lower and the bed shadows itself.
+  windowLight.shadow.mapSize.set(512, 512);
+  windowLight.shadow.normalBias = 0.004;
   scene.add(windowLight, windowLight.target);
+  return sun;
+}
+
+/**
+ * Shrinks the sun's orthographic shadow camera to just cover the room. Every shadow the room casts
+ * projects inside its bounding sphere as seen from the light, so nothing on the floor gets clipped.
+ */
+function fitShadowCamera(sun: THREE.DirectionalLight, room: THREE.Object3D) {
+  const sphere = new THREE.Box3().setFromObject(room).getBoundingSphere(new THREE.Sphere());
+  // The shadow camera is centred on the light's target (the origin), not on the room.
+  const extent = sphere.radius + sphere.center.distanceTo(sun.target.position);
+  const { camera } = sun.shadow;
+  camera.left = camera.bottom = -extent;
+  camera.right = camera.top = extent;
+  camera.updateProjectionMatrix();
 }
 
 function addFloor(scene: THREE.Scene) {
