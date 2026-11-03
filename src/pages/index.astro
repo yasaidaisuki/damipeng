@@ -17,7 +17,6 @@ const secondaryCtas = [links.github, links.linkedin, { ...links.resume, label: h
 
 <Base>
   <section
-    slot="wide"
     class="flex flex-wrap items-center gap-7 pt-8 pb-12 sm:gap-12 sm:pt-14 sm:pb-16"
     aria-labelledby="hero-heading"
   >
@@ -75,7 +74,7 @@ const secondaryCtas = [links.github, links.linkedin, { ...links.resume, label: h
 
   <section class="section" aria-labelledby="about">
     <SectionLabel id="about">{home.sections.about}</SectionLabel>
-    <div class="text-body-lg text-body flex flex-col gap-4">
+    <div class="text-body-lg text-body max-w-content flex flex-col gap-4">
       {home.about.map((paragraph) => (
         <p>{paragraph}</p>
       ))}

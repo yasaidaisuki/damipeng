@@ -9,12 +9,11 @@ import SEO, { type Props as SEOProps } from '@/components/SEO.astro';
 import { pages, site } from '@/data/site';
 
 type Props = SEOProps & {
-  /** Width of the page column: "content" (760px) or "post" (680px). */
+  /** "post" centres a 680px reading column; other pages use the full container. */
   width?: 'content' | 'post';
 };
 
 const { width = 'content', ...seo } = Astro.props;
-const column = width === 'post' ? 'max-w-post' : 'max-w-content';
 ---
 
 <!doctype html>
@@ -45,19 +44,20 @@ const column = width === 'post' ? 'max-w-post' : 'max-w-content';
     >
       {pages.skipLink}
     </a>
-    <!-- The header (and the home hero, via the "wide" slot) use the full 1200px container on every
-    page, so the nav doesn't move; everything else sits in a left-aligned column inside it. -->
+    <!-- One centred 1200px container for everything. Long text caps its own line length; posts
+    centre their reading column inside it. -->
     <div class="max-w-wide mx-auto flex w-full flex-1 flex-col px-6">
       <Nav />
       <main id="main" class="flex-1">
-        <slot name="wide" />
-        <div class={column}>
+        {width === 'post' ? (
+          <div class="max-w-post mx-auto">
+            <slot />
+          </div>
+        ) : (
           <slot />
-        </div>
+        )}
       </main>
-      <div class={column}>
-        <Footer />
-      </div>
+      <Footer />
     </div>
   </body>
 </html>

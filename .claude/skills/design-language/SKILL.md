@@ -5,7 +5,7 @@ description: Design language for the dami.peng portfolio site (Astro + Tailwind 
 
 # dami.peng design language
 
-Minimal and engineering-flavoured. A 760px column of text, hairline dividers, Geist with Geist Mono
+Minimal and engineering-flavoured. A wide centred page with a 760px text measure, hairline dividers, Geist with Geist Mono
 labels, one blue accent, and almost no decoration. The one picture is the 3D room in the home hero. The approved mockups are the visual
 source of truth. The tokens in `src/styles/global.css` encode them. **If this file and
 `global.css` disagree, `global.css` wins. Update this file to match it.**
@@ -80,9 +80,10 @@ medium, `tracking-[0.06em]`, uppercase, `muted`.
 - Radii: `rounded-chip` 6px (tags), `rounded-btn` 8px (buttons), `rounded-card` 10px (cards, code),
   `rounded-frame` 16px (the room frame).
   Filter pills are `rounded-full`.
-- Containers: the header and home hero use `max-w-wide` (1200px) with `px-6` on every page, so the
-  nav never moves. Content and the footer sit in a left-aligned `max-w-content` (760px) column inside
-  it; posts use `max-w-post` (680px). Pages put full-width hero content in Base's `wide` slot.
+- Containers: every page is one centred `max-w-wide` (1200px) container with `px-6`, shared by the
+  nav, sections and footer, so everything lines up. Sections and hairlines span the full width;
+  paragraphs and bullet lists cap at `max-w-content` (760px), intros at 580px. Posts centre a
+  `max-w-post` (680px) reading column. Grids (Now/Next, impact, projects) use the full width.
 - Rhythm: home hero `pt-8 pb-12 sm:pt-14 sm:pb-16`, text and room side by side
   (`flex-[1_1_400px]` / `flex-[1_1_380px] max-w-135`), stacking on narrow screens; `.section` is `border-t py-12`; `.page-header` is `pt-24 pb-12`.
   Use Tailwind's 4px scale and avoid one-off pixel values.

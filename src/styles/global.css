@@ -41,7 +41,7 @@
   --radius-card: 10px;
   --radius-frame: 16px;
 
-  /* Header and home hero; page content sits in the content/post column, left-aligned inside it. */
+  /* The page container on every page. Long text is capped at content (760px); posts at post. */
   --container-wide: 1200px;
   --container-content: 760px;
   --container-post: 680px;

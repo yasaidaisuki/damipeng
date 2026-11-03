@@ -55,9 +55,9 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
   above the fold. Pass pre-formatted strings (dates) as props so SSR and hydration match.
   The one exception is the home room (`RoomHero.astro`): a plain `<script>` that `import()`s three.js,
   so the home page doesn't ship React just to host a canvas.
-- **Layout:** the header and the home hero (an element with `slot="wide"`) use the 1200px
-  `max-w-wide` container on every page; page content and the footer sit in a left-aligned
-  `max-w-content`/`max-w-post` column inside it.
+- **Layout:** every page uses one centred `max-w-wide` (1200px) container for the nav, content and
+  footer. Sections and hairlines span it; long-form text caps itself at `max-w-content` (760px) for
+  line length. Posts (`width="post"`) centre a `max-w-post` reading column inside it.
 - Accessibility: one `h1` per page, labelled sections, 44px touch targets (`min-h-touch`),
   `:focus-visible` rings, `<time datetime>`. ESLint runs jsx-a11y in strict mode.
 - Drafts: `draft: true` posts render in dev only; `getPosts()` handles the filtering. A post's first
@@ -72,7 +72,11 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
 ## Home room
 
 - Ported from the separate `portfolio_website` repo: its model and dark-theme lighting, posed where
-  its intro animation ends. Drag (mouse or touch) turns it up to ±5° and it eases back on release.
+  its intro animation ends.
+- `room.glb` is an optimized copy of `portfolio_website/public/models/room.glb` (2 MB → 438 KB, which
+  looks the same even at the largest desktop frame): `npx @gltf-transform/cli@4` `resize --width 256
+--height 256`, `webp --quality 80`, `weld`, `simplify --ratio 0.5 --error 0.001`, then `draco`,
+  run in that order. Don't use `optimize`: it joins and renames nodes the scene looks up by name. Drag (mouse or touch) turns it up to ±5° and it eases back on release.
 - The poster `<img>` is the LCP element; the scene loads after `load` + idle and fades in over it.
   It stays on the poster for reduced motion, no WebGL, `deviceMemory < 4` or
   `hardwareConcurrency <= 4`. Renders are on demand only, capped at 30 fps, and pause off screen.
