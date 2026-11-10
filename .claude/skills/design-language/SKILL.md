@@ -38,7 +38,7 @@ source of truth. The tokens in `src/styles/global.css` encode them. **If this fi
 | `border-strong`          | `#dadae0`             | Secondary buttons, idle chips, card hover |
 | `surface`                | `#f6f6f8`             | Code blocks                               |
 | `chip`                   | `#f3f3f5`             | Tech tag background                       |
-| `accent`                 | `#2347c6`             | Links, metrics, status dot, focus ring    |
+| `accent`                 | `#2347c6`             | Links, metrics, focus ring                |
 | `on-accent`              | `#ffffff`             | Text on accent                            |
 | `inverse` / `on-inverse` | `#111113` / `#ffffff` | Primary button, active filter pill        |
 | `brand-ibm`              | `#0f62fe`             | Hover on IBM's name (IBM Blue 60)         |
