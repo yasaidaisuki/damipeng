@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://damipeng.pages.dev/sitemap-index.xml
+Sitemap: https://damipeng.com/sitemap-index.xml

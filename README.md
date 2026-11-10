@@ -58,7 +58,13 @@ Each post's comments are a GitHub Discussion, shown with [giscus](https://giscus
 
    ```json
    {
-     "origins": ["https://damipeng.pages.dev", "http://localhost:4321", "http://localhost:8788"],
+     "origins": [
+       "https://damipeng.com",
+       "https://www.damipeng.com",
+       "https://damipeng.pages.dev",
+       "http://localhost:4321",
+       "http://localhost:8788"
+     ],
      "defaultCommentOrder": "oldest"
    }
    ```

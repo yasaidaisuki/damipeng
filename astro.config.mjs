@@ -5,8 +5,7 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
-// TODO: replace with the production domain once it's set up on Cloudflare Pages.
-const SITE_URL = 'https://damipeng.pages.dev';
+const SITE_URL = 'https://damipeng.com';
 
 export default defineConfig({
   site: SITE_URL,
