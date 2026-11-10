@@ -8,7 +8,7 @@ export const site = {
   name: 'Dami Peng',
   /** Wordmark in the nav. */
   handle: 'dami.peng',
-  title: 'Dami Peng · Software Engineer',
+  title: 'Dami Peng',
   description:
     'Dami Peng is a software engineer building backend systems and infrastructure. Computational Mathematics at the University of Waterloo, open to Summer 2027 internships and new grad roles.',
   locale: 'en_CA',
@@ -227,9 +227,9 @@ export const pages = {
     title: 'Contact',
     description:
       'Get in touch with Dami Peng about Summer 2027 internships and new grad software engineering roles.',
-    heading: 'Get in touch',
+    heading: 'Reach out!',
     intro:
-      "I'm looking for Summer 2027 software engineering internships and new grad roles. My graduation date is flexible, so I can start full-time as early as September 2027 — in Canada or the US. Canadian citizen, TN visa eligible.",
+      "I'm looking for both Summer 2027 software engineering internships and new grad opportunities since my graduation is flexible. Aside from that, feel free to reach out to me for any reason!",
     note: 'Based in Toronto · usually replies within a couple of days',
   },
   notFound: {
