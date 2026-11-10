@@ -12,8 +12,8 @@ export interface PostSummary {
   topic?: string | undefined;
   tags: string[];
   draft: boolean;
-  /** Pre-formatted count ("3 comments"), filled in by the Phase 2 comments API. */
-  commentsLabel?: string;
+  /** Pre-formatted count ("3 comments") from `getCommentCounts`; unset when there are none. */
+  commentsLabel?: string | undefined;
 }
 
 interface Props {

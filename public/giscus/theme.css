@@ -1,0 +1,125 @@
+/*!
+ * giscus theme for the site. It runs inside giscus's iframe, which can't read the site's CSS
+ * variables, so the colours below are copies of the tokens in src/styles/global.css (named in the
+ * comments): keep them in sync. Served with CORS for https://giscus.app (public/_headers).
+ *
+ * Syntax colours are from giscus's light theme, MIT License, Copyright (c) 2018 GitHub Inc.
+ * https://github.com/primer/primitives/blob/main/LICENSE
+ */
+@font-face {
+  font-family: 'Geist';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('/giscus/geist.woff2') format('woff2-variations');
+}
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('/giscus/geist-mono.woff2') format('woff2-variations');
+}
+
+main {
+  --color-prettylights-syntax-comment:#6e7781;
+  --color-prettylights-syntax-constant:#0550ae;
+  --color-prettylights-syntax-entity:#8250df;
+  --color-prettylights-syntax-storage-modifier-import:#24292f;
+  --color-prettylights-syntax-entity-tag:#116329;
+  --color-prettylights-syntax-keyword:#cf222e;
+  --color-prettylights-syntax-string:#0a3069;
+  --color-prettylights-syntax-variable:#953800;
+  --color-prettylights-syntax-brackethighlighter-unmatched:#82071e;
+  --color-prettylights-syntax-invalid-illegal-text:#f6f8fa;
+  --color-prettylights-syntax-invalid-illegal-bg:#82071e;
+  --color-prettylights-syntax-carriage-return-text:#f6f8fa;
+  --color-prettylights-syntax-carriage-return-bg:#cf222e;
+  --color-prettylights-syntax-string-regexp:#116329;
+  --color-prettylights-syntax-markup-list:#3b2300;
+  --color-prettylights-syntax-markup-heading:#0550ae;
+  --color-prettylights-syntax-markup-italic:#24292f;
+  --color-prettylights-syntax-markup-bold:#24292f;
+  --color-prettylights-syntax-markup-deleted-text:#82071e;
+  --color-prettylights-syntax-markup-deleted-bg:#ffebe9;
+  --color-prettylights-syntax-markup-inserted-text:#116329;
+  --color-prettylights-syntax-markup-inserted-bg:#dafbe1;
+  --color-prettylights-syntax-markup-changed-text:#953800;
+  --color-prettylights-syntax-markup-changed-bg:#ffd8b5;
+  --color-prettylights-syntax-markup-ignored-text:#eaeef2;
+  --color-prettylights-syntax-markup-ignored-bg:#0550ae;
+  --color-prettylights-syntax-meta-diff-range:#8250df;
+  --color-prettylights-syntax-brackethighlighter-angle:#57606a;
+  --color-prettylights-syntax-sublimelinter-gutter-mark:#8c959f;
+  --color-prettylights-syntax-constant-other-reference-link:#0a3069;
+
+  /* Site tokens (src/styles/global.css), copied because the iframe can't read them. */
+  --color-btn-text: #111113; /* fg */
+  --color-btn-bg: #ffffff; /* bg */
+  --color-btn-border: #dadae0; /* border-strong */
+  --color-btn-shadow: none;
+  --color-btn-inset-shadow: none;
+  --color-btn-hover-bg: #f6f6f8; /* surface */
+  --color-btn-hover-border: #dadae0;
+  --color-btn-active-bg: #f3f3f5; /* chip */
+  --color-btn-active-border: #dadae0;
+  --color-btn-selected-bg: #f3f3f5;
+  --color-btn-primary-text: #ffffff; /* on-inverse */
+  --color-btn-primary-bg: #111113; /* inverse: the primary button */
+  --color-btn-primary-border: #111113;
+  --color-btn-primary-shadow: none;
+  --color-btn-primary-inset-shadow: none;
+  --color-btn-primary-hover-bg: #26262c; /* body */
+  --color-btn-primary-hover-border: #26262c;
+  --color-btn-primary-selected-bg: #26262c;
+  --color-btn-primary-selected-shadow: none;
+  --color-btn-primary-disabled-text: #ffffffcc;
+  --color-btn-primary-disabled-bg: #5b5b66; /* muted */
+  --color-btn-primary-disabled-border: #5b5b66;
+  --color-action-list-item-default-hover-bg: #f3f3f5;
+  --color-segmented-control-bg: #f3f3f5;
+  --color-segmented-control-button-bg: #ffffff;
+  --color-segmented-control-button-selected-border: #dadae0;
+  --color-fg-default: #26262c; /* body */
+  --color-fg-muted: #5b5b66; /* muted */
+  --color-fg-subtle: #5b5b66;
+  --color-canvas-default: #ffffff; /* bg */
+  --color-canvas-overlay: #ffffff;
+  --color-canvas-inset: #f6f6f8; /* surface */
+  --color-canvas-subtle: #f6f6f8;
+  --color-border-default: #e6e6ea; /* hairline */
+  --color-border-muted: #efeff2; /* hairline-soft */
+  --color-neutral-muted: #f3f3f5; /* chip */
+  --color-accent-fg: #2347c6; /* accent */
+  --color-accent-emphasis: #2347c6;
+  --color-accent-muted: #2347c666;
+  --color-accent-subtle: #2347c614;
+  --color-success-fg: #1a7f37;
+  --color-attention-fg: #9a6700;
+  --color-attention-muted: #d4a72c66;
+  --color-attention-subtle: #fff8c5;
+  --color-danger-fg: #d1242f;
+  --color-danger-muted: #ff818266;
+  --color-danger-subtle: #ffebe9;
+  --color-primer-shadow-inset: none;
+  --color-scale-gray-1: #f3f3f5;
+  --color-scale-blue-1: #2347c61f;
+  --color-social-reaction-bg-hover: var(--color-scale-gray-1);
+  --color-social-reaction-bg-reacted-hover: var(--color-scale-blue-1);
+
+  font-family: 'Geist', ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+main code,
+main pre,
+main kbd {
+  font-family: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+/* From giscus's light theme. */
+main .pagination-loader-container {
+  background-image: url('https://github.com/images/modules/pulls/progressive-disclosure-line.svg');
+}
+main .gsc-loading-image {
+  background-image: url('https://github.githubassets.com/images/mona-loading-default.gif');
+}

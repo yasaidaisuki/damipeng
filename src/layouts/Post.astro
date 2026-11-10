@@ -1,5 +1,5 @@
 ---
-import Comments from '@/components/islands/Comments';
+import Comments from '@/components/Comments.astro';
 import { pages } from '@/data/site';
 import Base from '@/layouts/Base.astro';
 import { formatDate, isoDate } from '@/lib/format';
@@ -38,10 +38,5 @@ const topic = postTopic(post);
       <slot />
     </div>
   </article>
-  <Comments
-    client:visible
-    slug={post.id}
-    heading={pages.comments.heading}
-    placeholder={pages.comments.placeholder}
-  />
+  <Comments slug={post.id} draft={draft} copy={pages.comments} />
 </Base>

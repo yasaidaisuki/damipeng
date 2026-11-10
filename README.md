@@ -28,7 +28,7 @@ CI (`.github/workflows/ci.yml`) runs format check, lint, `astro check` and build
 
 - **Work history**: `src/data/work.ts`. Typed entries; `/work` and the home page render from it.
   Multiple terms at one company go in `terms[]`.
-- **Home, contact and page copy, links**: `src/data/site.ts`. GitHub and LinkedIn URLs are TODOs.
+- **Home, contact and page copy, links**: `src/data/site.ts`.
 - **Posts**: add `src/content/posts/<slug>.mdx` with frontmatter:
 
   ```yaml
@@ -46,6 +46,33 @@ CI (`.github/workflows/ci.yml`) runs format check, lint, `astro check` and build
 - **Logos**: files in `public/logos/`, referenced from `work.ts` as `{ src, capHeight, padding? }`.
   If a file is missing, the work page falls back to a text name.
 - **Résumé**: put the PDF at `public/resume.pdf`.
+
+## Comments (giscus)
+
+Each post's comments are a GitHub Discussion, shown with [giscus](https://giscus.app). One-time setup:
+
+1. Create the public repo named in `giscus.repo` (`src/data/site.ts`) and turn on Discussions.
+2. Add a Discussions category called **Comments** with the **Announcements** format.
+3. Install the [giscus app](https://github.com/apps/giscus) on that repo only.
+4. Add `giscus.json` to that repo's root so only this site can embed it:
+
+   ```json
+   {
+     "origins": ["https://damipeng.pages.dev", "http://localhost:4321", "http://localhost:8788"],
+     "defaultCommentOrder": "oldest"
+   }
+   ```
+
+5. Fill in `repoId` and `categoryId` in `src/data/site.ts`:
+
+   ```sh
+   gh api graphql -f query='{ repository(owner: "yasaidaisuki", name: "blog-comments") {
+     id discussionCategories(first: 10) { nodes { id name } } } }'
+   ```
+
+**Comment counts** on `/writing` are fetched at build time. Set `GISCUS_COUNTS_TOKEN` in the
+Cloudflare Pages build environment to a fine-grained token with read-only access to public
+repositories. Without it, counts are hidden. Counts update on each deploy.
 
 ## Deploying (Cloudflare Pages)
 

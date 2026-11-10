@@ -12,3 +12,8 @@
 # Room hero poster: unhashed, so cache for a day.
 /room/*
   Cache-Control: public, max-age=86400
+
+# giscus theme and its fonts: loaded by the giscus.app iframe in CORS mode.
+/giscus/*
+  Access-Control-Allow-Origin: https://giscus.app
+  Cache-Control: public, max-age=86400

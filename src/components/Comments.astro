@@ -1,0 +1,92 @@
+---
+// A post's discussion thread: giscus (a GitHub Discussion in an iframe), injected once the section
+// nears the viewport. The GitHub link stands in for it without JavaScript or if giscus is blocked.
+import { giscus } from '@/data/site';
+import { commentsEnabled } from '@/lib/comments';
+
+interface Props {
+  /** Post slug; giscus finds or creates the Discussion with this exact title. */
+  slug: string;
+  draft: boolean;
+  copy: { heading: string; fallback: string; closed: string; draft: string };
+}
+
+const { slug, draft, copy } = Astro.props;
+// A comment on a draft would create a public Discussion before the post exists.
+const live = commentsEnabled && !draft;
+---
+
+<section aria-labelledby="discussion" class="border-hairline border-t pt-10 pb-18">
+  <h2 id="discussion" class="text-h2">
+    {copy.heading}
+  </h2>
+  {live ? (
+    <div
+      data-giscus
+      data-repo={giscus.repo}
+      data-repo-id={giscus.repoId}
+      data-category={giscus.category}
+      data-category-id={giscus.categoryId}
+      data-term={slug}
+    >
+      <a href={giscus.discussionsUrl} class="link-accent mt-3" data-giscus-fallback>
+        {copy.fallback}
+      </a>
+      <div class="giscus mt-6" />
+    </div>
+  ) : (
+    <p class="text-ui text-muted mt-5">{draft ? copy.draft : copy.closed}</p>
+  )}
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-giscus]');
+  const GISCUS = 'https://giscus.app';
+
+  const load = () => {
+    if (!root) return;
+    const { repo, repoId, category, categoryId, term } = root.dataset;
+    const script = document.createElement('script');
+    script.src = `${GISCUS}/client.js`;
+    script.async = true;
+    script.crossOrigin = 'anonymous';
+    Object.entries({
+      repo,
+      repoId,
+      category,
+      categoryId,
+      mapping: 'specific',
+      term,
+      strict: '1',
+      reactionsEnabled: '1',
+      emitMetadata: '0',
+      inputPosition: 'top',
+      lang: 'en',
+      loading: 'lazy',
+      // The dev server can't send the theme's CORS header (public/_headers), so dev uses the
+      // stock light theme. `wrangler pages dev dist` serves the real one.
+      theme: import.meta.env.DEV ? 'light' : new URL('/giscus/theme.css', location.origin).href,
+    }).forEach(([key, value]) => (script.dataset[key] = value ?? ''));
+    root.append(script);
+  };
+
+  // giscus messages the page once its iframe is up (even just to say the post has no Discussion
+  // yet), so the fallback link is redundant from then on.
+  addEventListener('message', function ready(event) {
+    if (event.origin !== GISCUS) return;
+    root?.querySelector('[data-giscus-fallback]')?.remove();
+    removeEventListener('message', ready);
+  });
+
+  if (root) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((e) => e.isIntersecting)) return;
+        observer.disconnect();
+        load();
+      },
+      { rootMargin: '600px 0px' },
+    );
+    observer.observe(root);
+  }
+</script>

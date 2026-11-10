@@ -21,6 +21,20 @@ export const site = {
   meta: 'Toronto · Canadian citizen · TN eligible',
 } as const;
 
+/**
+ * Post comments run on giscus: each post's thread is a GitHub Discussion in this public repo,
+ * titled with the post's slug. The IDs are public; the README shows how to look them up. Until
+ * they're filled in, posts show `pages.comments.closed` instead of a thread.
+ */
+export const giscus = {
+  repo: 'yasaidaisuki/blog-comments',
+  repoId: '',
+  category: 'Comments',
+  categoryId: '',
+  /** Where the no-JS fallback link goes. */
+  discussionsUrl: 'https://github.com/yasaidaisuki/blog-comments/discussions',
+} as const;
+
 export interface NavItem {
   label: string;
   href: string;
@@ -199,8 +213,9 @@ export const pages = {
     description:
       'Notes on systems I have built, bugs I have chased, and the trade-offs behind them.',
     heading: 'Writing',
-    // Phase 2: append "Every post has a discussion thread — sign in with GitHub to join."
     intro: 'Notes on systems I have built, bugs I have chased, and the trade-offs behind them.',
+    /** Appended to the intro once comments are live. */
+    commentsNote: 'Every post has a discussion thread — sign in with GitHub to join.',
     filterLabel: 'Filter by topic',
     allTopics: 'All',
     empty: 'No posts yet.',
@@ -226,7 +241,11 @@ export const pages = {
   },
   comments: {
     heading: 'Discussion',
-    placeholder: 'Comments are coming soon.',
+    /** Shown without JavaScript, or if giscus is blocked; hidden once the thread loads. */
+    fallback: 'Join the discussion on GitHub →',
+    /** Before the giscus IDs are set. */
+    closed: 'Comments are coming soon.',
+    draft: 'Comments open when this post is published.',
   },
   footer: {
     rss: 'RSS',

@@ -114,6 +114,10 @@ padding? }`. Logos are scaled so their capital letters are 24px tall, not by box
   frame holding a poster `<img>` with the three.js canvas faded in over it, a `bg-scrim
 text-on-inverse text-meta` mono hint pill bottom-left that hides while dragging and fades back in 1.5s after release, and a mono
   `text-meta text-muted` caption. The frame is `touch-pan-y`, so vertical swipes still scroll.
+- **Comments** (posts, `Comments.astro`): a `.section`-style hairline block with an `h2` "Discussion"
+  and the giscus iframe. giscus is styled by `public/giscus/theme.css`, which mirrors the tokens in
+  raw hex (the iframe can't read CSS variables) and makes giscus's primary button `inverse`, like
+  `.btn-primary`. Change it together with `global.css`.
 
 ## Interaction and accessibility
 

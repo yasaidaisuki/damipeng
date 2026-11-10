@@ -2,11 +2,17 @@
 import PostFilter, { type PostSummary } from '@/components/islands/PostFilter';
 import { pages } from '@/data/site';
 import Base from '@/layouts/Base.astro';
+import { commentsEnabled, getCommentCounts } from '@/lib/comments';
 import { formatDate, isoDate } from '@/lib/format';
 import { getPosts, getTags, postTopic, postUrl } from '@/lib/posts';
 
 const page = pages.writing;
 const posts = await getPosts();
+const counts = await getCommentCounts();
+const count = (slug: string) => {
+  const n = counts.get(slug);
+  return n ? page.comments(n) : undefined;
+};
 const summaries: PostSummary[] = posts.map((post) => ({
   slug: post.id,
   url: postUrl(post),
@@ -17,13 +23,17 @@ const summaries: PostSummary[] = posts.map((post) => ({
   topic: postTopic(post),
   tags: post.data.tags,
   draft: post.data.draft,
+  commentsLabel: count(post.id),
 }));
 ---
 
 <Base title={page.title} description={page.description} image="/og/writing.png">
   <header class="pt-24">
     <h1 class="text-h1">{page.heading}</h1>
-    <p class="page-intro">{page.intro}</p>
+    <p class="page-intro">
+      {page.intro}
+      {commentsEnabled && ` ${page.commentsNote}`}
+    </p>
   </header>
   <PostFilter
     client:load

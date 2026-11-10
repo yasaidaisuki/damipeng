@@ -1,8 +1,8 @@
 # CLAUDE.md
 
 Static Astro 7 portfolio + blog. TypeScript (strictest), MDX, Tailwind CSS v4, React 19 islands.
-Deploys to Cloudflare Pages as plain static files (no adapter). A Go comments service will live
-in `/comments` (Phase 2); it's excluded from the site's tsconfig and ESLint.
+Deploys to Cloudflare Pages as plain static files (no adapter). Post comments are giscus
+(GitHub Discussions in an iframe), so there's no backend; see Comments below.
 
 ## Commands
 
@@ -18,15 +18,17 @@ src/
   data/work.ts         Typed work history (WorkEntry / WorkTerm); facts from the résumé, wording from the mockups
   content.config.ts    `posts` collection (glob loader) + zod schema
   content/posts/       *.mdx posts
-  lib/                 posts.ts (getPosts/getTags/postUrl), format.ts (dates), logos.ts (build-time logo check)
+  lib/                 posts.ts (getPosts/getTags/postUrl), format.ts (dates), logos.ts (build-time logo check),
+                       comments.ts (giscus on/off, build-time comment counts)
   lib/room/scene.ts    three.js room for the home hero, loaded lazily by components/RoomHero.astro
   assets/room/         room.glb, screen.mp4 (monitor video), screen-still.webp (its frame at 5s)
-  layouts/             Base.astro (head, nav, main with a `wide` slot, footer), Post.astro (article + comments)
+  layouts/             Base.astro (head, nav, main, footer), Post.astro (article + comments)
   components/          Static .astro components, zero client JS
-  components/islands/  React .tsx components that hydrate (PostFilter, Comments)
+  components/islands/  React .tsx components that hydrate (PostFilter)
   pages/               Routes; og/[...slug].png.ts renders OG images at build time with satori
   styles/global.css    Tailwind entry: @theme tokens, base + component classes
-public/                favicon, robots.txt, _headers (Cloudflare), logos/, resume.pdf, room/ (hero poster)
+public/                favicon, robots.txt, _headers (Cloudflare), logos/, resume.pdf, room/ (hero poster),
+                       giscus/ (comments theme + its fonts)
 scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens change
 ```
 
@@ -43,8 +45,8 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
   `inverse`/`on-inverse`, `room`, `scrim`. Type: `text-display`, `text-h1`, `text-h1-post`, `text-h2`, `text-pitch`,
   `text-lead`, `text-prose`, `text-body-lg`, `text-ui` (15px), `text-meta` (13px),
   `text-metric`. Also `rounded-chip|btn|card|frame`, `max-w-wide|content|post`, `min-h-touch`, `font-mono`,
-  `font-plex-mono`. No raw hex or arbitrary color values in markup. The exception is the OG
-  renderer, which can't read CSS variables.
+  `font-plex-mono`. No raw hex or arbitrary color values in markup. The exceptions are the OG
+  renderer and `public/giscus/theme.css`, which can't read CSS variables.
 - **Light mode only.** There is deliberately no dark mode: don't add `prefers-color-scheme` rules,
   `dark:` variants or dark logo variants.
 - Shared patterns are `@layer components` classes: `.section`, `.section-label`, `.btn` +
@@ -53,8 +55,8 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
 - **`.astro` by default, `.tsx` only when interactive.** Islands must render meaningful HTML on
   the server (no-JS users see the full list). Prefer `client:visible` unless the island is
   above the fold. Pass pre-formatted strings (dates) as props so SSR and hydration match.
-  The one exception is the home room (`RoomHero.astro`): a plain `<script>` that `import()`s three.js,
-  so the home page doesn't ship React just to host a canvas.
+  The exceptions are the home room (`RoomHero.astro`), a plain `<script>` that `import()`s three.js,
+  and `Comments.astro`, which injects giscus: neither page ships React just to host an embed.
 - **Layout:** every page uses one centred `max-w-wide` (1200px) container for the nav, content and
   footer. Sections and hairlines span it; long-form text caps itself at `max-w-content` (760px) for
   line length. Posts (`width="post"`) centre a `max-w-post` reading column inside it.
@@ -90,9 +92,20 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
   will visibly jump: screenshot the live canvas at 1280px wide, DPR 2, with the mp4 request blocked.
   `--color-room` is the rendered floor colour; re-sample it too.
 
-## Phase 2 hooks
+## Comments
 
-- `components/islands/Comments.tsx` is the placeholder. Keep its `slug` prop, and replace the body
-  with the API client (comments list, GitHub sign-in, SSE subscription).
-- `PostFilter` rows render `<span data-comment-count={slug}>`, and `PostSummary.commentCount`
-  is the slot for counts.
+- giscus: each post's thread is a GitHub Discussion in the public `giscus.repo` (`src/data/site.ts`),
+  in an Announcements-type category, so only giscus and the owner start threads. Moderate on GitHub.
+- Mapping is `specific` + `strict`, with the post slug as the term: the Discussion's title is the
+  slug, so URLs and domains can change freely. **Renaming a post file orphans its thread.**
+- `components/Comments.astro` injects `giscus.app/client.js` once the section is within 600px of
+  the viewport. It shows the closed or draft copy until the IDs are set, and on drafts (a test
+  comment would create a public Discussion). Without JS, a link to the Discussions stands in.
+- `public/giscus/theme.css` copies the site tokens into giscus's variables (keep it in sync with
+  `global.css`). The iframe loads it and its fonts in CORS mode, hence the `/giscus/*` block in
+  `_headers`. `npm run dev` uses giscus's stock light theme; test the real one with
+  `npx wrangler pages dev dist`.
+- `giscus.json` in the comments repo restricts which origins can embed it. Add new domains there.
+- `/writing` counts come from `getCommentCounts()` at build time (GitHub GraphQL, needs
+  `GISCUS_COUNTS_TOKEN`; without it, or on error, counts are hidden and the build still passes).
+  They're as fresh as the last deploy.
