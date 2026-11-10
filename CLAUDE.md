@@ -64,6 +64,9 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
   `:focus-visible` rings, `<time datetime>`. ESLint runs jsx-a11y in strict mode.
 - Drafts: `draft: true` posts render in dev only; `getPosts()` handles the filtering. A post's first
   tag is its topic (shown in list and post meta), so use human-readable tags ("Distributed systems").
+- Video in posts: `<YouTube id="…" />` (`@astro-community/astro-embed-youtube`, passed to MDX in
+  `writing/[slug].astro`). It shows a thumbnail and loads youtube-nocookie only on click. Raw
+  `youtube.com/watch?v=` iframes don't work: YouTube won't let watch pages be framed.
 - Logos live in `public/logos/` (SVG, or the official PNG where that's what the brand supplies).
   In `work.ts`, `logo: { src, capHeight, padding? }`. `lib/logos.ts` scales every logo so its capital
   letters are 24px tall (`capHeight` is the measured fraction of the file's height), and
@@ -94,7 +97,7 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
 
 ## Comments
 
-- giscus: each post's thread is a GitHub Discussion in the public `giscus.repo` (`src/data/site.ts`),
+- giscus: each post's thread is a GitHub Discussion in this repo (`giscus.repo` in `src/data/site.ts`),
   in an Announcements-type category, so only giscus and the owner start threads. Moderate on GitHub.
 - Mapping is `specific` + `strict`, with the post slug as the term: the Discussion's title is the
   slug, so URLs and domains can change freely. **Renaming a post file orphans its thread.**
@@ -105,7 +108,8 @@ scripts/contrast.mjs   WCAG check for the color tokens; update it when tokens ch
   `global.css`). The iframe loads it and its fonts in CORS mode, hence the `/giscus/*` block in
   `_headers`. `npm run dev` uses giscus's stock light theme; test the real one with
   `npx wrangler pages dev dist`.
-- `giscus.json` in the comments repo restricts which origins can embed it. Add new domains there.
+- The repo must stay public for giscus to work. `giscus.json` at the repo root restricts which
+  origins can embed it. Add new domains there.
 - `/writing` counts come from `getCommentCounts()` at build time (GitHub GraphQL, needs
   `GISCUS_COUNTS_TOKEN`; without it, or on error, counts are hidden and the build still passes).
   They're as fresh as the last deploy.

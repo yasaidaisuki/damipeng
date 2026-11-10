@@ -51,10 +51,10 @@ CI (`.github/workflows/ci.yml`) runs format check, lint, `astro check` and build
 
 Each post's comments are a GitHub Discussion, shown with [giscus](https://giscus.app). One-time setup:
 
-1. Create the public repo named in `giscus.repo` (`src/data/site.ts`) and turn on Discussions.
+1. Make the repo named in `giscus.repo` (`src/data/site.ts`, this site's own repo) public and turn on Discussions.
 2. Add a Discussions category called **Comments** with the **Announcements** format.
 3. Install the [giscus app](https://github.com/apps/giscus) on that repo only.
-4. Add `giscus.json` to that repo's root so only this site can embed it:
+4. `giscus.json` in this repo's root limits which sites can embed it:
 
    ```json
    {
@@ -66,7 +66,7 @@ Each post's comments are a GitHub Discussion, shown with [giscus](https://giscus
 5. Fill in `repoId` and `categoryId` in `src/data/site.ts`:
 
    ```sh
-   gh api graphql -f query='{ repository(owner: "yasaidaisuki", name: "blog-comments") {
+   gh api graphql -f query='{ repository(owner: "yasaidaisuki", name: "damipeng") {
      id discussionCategories(first: 10) { nodes { id name } } } }'
    ```
 

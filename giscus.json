@@ -1,0 +1,4 @@
+{
+  "origins": ["https://damipeng.pages.dev", "http://localhost:4321", "http://localhost:8788"],
+  "defaultCommentOrder": "oldest"
+}

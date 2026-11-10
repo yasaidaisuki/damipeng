@@ -192,6 +192,10 @@
     @apply rounded-chip border border-hairline bg-surface px-1.5 py-0.5 font-normal;
   }
 
+  .prose-site lite-youtube {
+    @apply my-8 overflow-hidden rounded-frame border border-hairline;
+  }
+
   .prose-site :where(code):not(:where(pre code))::before,
   .prose-site :where(code):not(:where(pre code))::after {
     content: none;

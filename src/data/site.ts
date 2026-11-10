@@ -27,12 +27,12 @@ export const site = {
  * they're filled in, posts show `pages.comments.closed` instead of a thread.
  */
 export const giscus = {
-  repo: 'yasaidaisuki/blog-comments',
-  repoId: '',
+  repo: 'yasaidaisuki/damipeng',
+  repoId: 'R_kgDOVgiT-g',
   category: 'Comments',
-  categoryId: '',
+  categoryId: 'DIC_kwDOVgiT-s4DKyLS',
   /** Where the no-JS fallback link goes. */
-  discussionsUrl: 'https://github.com/yasaidaisuki/blog-comments/discussions',
+  discussionsUrl: 'https://github.com/yasaidaisuki/damipeng/discussions',
 } as const;
 
 export interface NavItem {

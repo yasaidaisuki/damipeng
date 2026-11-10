@@ -1,29 +1,75 @@
 ---
-title: 'Every replica gets the message: WebSocket fan-out with Redis Pub/Sub'
-date: 2026-11-01
-summary: 'Workers emitted events to one API pod; users connected to the other five never saw them. How a broadcast layer fixed it for 83% of sessions.'
-tags: ['Distributed systems']
-draft: true
+title: 'Vibe-coding with taste'
+date: 2026-11-09
+summary: 'A pure vibe-coded website, but with taste.'
+tags: ['Frontend', 'Vibe-coding']
+draft: false
 ---
 
-We ran six API replicas behind a load balancer. Background workers finished a job, emitted a WebSocket
-event — and that event only reached clients connected to whichever replica the worker happened to talk
-to. Five out of six users were waiting on a spinner that would never resolve.
+Hey! If you're reading this, welcome to my website.
 
-The fix was to stop treating the socket server as a single place. Workers publish to a channel; every
-replica subscribes and forwards to its own connected clients.
+Although I already have an existing website, I justified creating another one because I wanted a platform to share my thoughts and showcase my portfolio.
 
-```ts
-// worker: publish instead of emitting locally
-await redis.publish('ws:events', JSON.stringify({ room, event, payload }));
+I wrote approximately zero lines of code in the process of creating this website. Honestly, my biggest contribution was probably my taste. That includes:
 
-// every API replica
-sub.subscribe('ws:events');
-sub.on('message', (_, msg) => {
-  const { room, event, payload } = JSON.parse(msg);
-  io.to(room).emit(event, payload);
+- How the codebase is structured
+- The design language of the website, i.e. my taste in visuals
+- Making my own life easier when maintaining and adding to the website
+
+I think taste extends beyond just how something looks. It also influences the decisions you make when building something, including what _not_ to build.
+
+## What I didn't build
+
+### SPA vs MPA
+
+For example, I don't think there's much of an argument for using a SPA framework like React for this website. State management becomes more trouble than it's worth, and I don't really need the responsiveness of a SPA here. The only place I actually use React is the tag filter on the Writing page. Everything else is just HTML.
+
+**SPA:**
+
+```tsx
+<Link to="/writing/hello-world">Hello world</Link>
+
+// ...then on the post page
+const { data: post, isLoading } = useQuery({
+  queryKey: ['post', slug],
+  queryFn: () => fetch(`/api/posts/${slug}`).then((r) => r.json()),
 });
+if (isLoading) return <Spinner />;
 ```
 
-Draft. Still to write: the trade-offs — at-most-once delivery, why not sticky sessions, and what we
-monitor now.
+**MPA:**
+
+```html
+<a href="/writing/hello-world">Hello world</a>
+```
+
+Of course, this isn't to say that every SPA requires this much boilerplate. But for a website that's mostly static content, I don't see much value in introducing client-side routing, state management, and additional JavaScript when plain HTML does the job.
+
+### Comments
+
+Another deliberate decision was the commenting system on this website. I really didn't want to store comments in a database, and build a backend (however simple it may be).
+The fact is that, I'd have to find a way to host an extra service(s) and that cost money. _More money than I'm willing to spend..._
+
+In fact, Claude initially steered me towards building a `Go` service backed by an entire `Postgres` database. I ended up using `Giscus`, an open-source commenting system powered by GitHub Discussions.
+
+Even better, I effectively got authentication through GitHub, which provides at least some barrier against anonymous abuse. The biggest win, though, is that I don't have to pay to host or maintain my own backend.
+
+The trade-off is that you need a GitHub account to comment, but honestly, if you're reading this, you probably have one.
+
+## My taste
+
+Finally, I want to talk more about the visual style of this website.
+
+I placed a lot of emphasis on having a consistent design language. Of course, Claude created the initial spike, but I didn't want to end up with just another generic vibe-coded website. (Although, many people may think this still looks very vibe-coded, and I'd agree to some extent.)
+
+I think what makes this website unique is how I've tried to sprinkle my personality across each page.
+
+The landing page features a 3D Blender model that I made quite a few years ago. I still remember spending hours looking up how to model a book, a lamp, and window blinds in Blender, a process I genuinely enjoyed. There's even real-time lighting (via Three.js) in the scene you see!
+
+Another personal touch is the use of company logos on my Work page. I once saw this flamboyant resume that used company logos instead of the standard Jake's Resume styling, which I found extremely cool. Obviously, I'm not the first person to use company logos to showcase work experience, but it's something I really wanted on my website.
+
+Ultimately, I think that's what I wanted out of this project. I didn't necessarily want to write all the code myself. I wanted to build something that looks and feels like mine, while making deliberate decisions about how it works.
+
+And if I'm going to vibe-code an entire website, I might as well do it with some taste.
+
+<YouTube id="jg1WUOxY6Cg" title="Basically me" />
